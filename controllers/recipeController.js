@@ -23,8 +23,10 @@ var review = [
 	}
 ];
 
+var categories = ['Breakfast', 'Lunch', 'Dinner'];
+
 module.exports = {
 	findOne: function(req, res) {
-		res.render('recipe', { recipe: recipe, review: review });
+		res.render('recipe', { recipe: recipe, review: review, categories: categories });
 	}
 };
