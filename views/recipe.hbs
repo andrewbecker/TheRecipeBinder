@@ -1,6 +1,6 @@
 <div class="row page-header">
 	<div class="col-lg-12">
-		<h1>Apple Pie</h1>
+		<h1>{{recipe.title}}</h1>
 	</div>
 </div>
 <div class="row">
@@ -9,23 +9,14 @@
 		<div class="col-sm-6 col-xs-6">
 			<h2>Ingredients</h2>
 			<ul class="list-unstyled ingredients">
-				<div class="col-md-5">
-					<li class="ingredient"><span class="glyphicon glyphicon-ok"></span>Apples</li>
-					<li class="ingredient"><span class="glyphicon glyphicon-ok"></span>Pie crust</li>
-					<li class="ingredient"><span class="glyphicon glyphicon-ok"></span>Cinnamon</li>
-					<li class="ingredient"><span class="glyphicon glyphicon-ok"></span>Apples</li>
-					<li class="ingredient"><span class="glyphicon glyphicon-ok"></span>Pie crust</li>
-				</div>
-				<div class="col-md-5 col-md-offset-2">
-					<li class="ingredient"><span class="glyphicon glyphicon-ok"></span>Water</li>
-					<li class="ingredient"><span class="glyphicon glyphicon-ok"></span>Sugar</li>
-					<li class="ingredient"><span class="glyphicon glyphicon-ok"></span>Pans</li>
-				</div>
+				{{#each recipe.ingredients}}
+					<li class="ingredient"><span class="glyphicon glyphicon-ok"></span>{{this}}</li>
+				{{/each}}
 			</ul>
 		</div>
 		<div class="col-xs-5 col-xs-offset-1 col-sm-5 col-sm-offset-1">
 			<!-- right column for picture -->
-			<img src="images/apple_pie.jpg" alt="Apple Pie" class="img-responsive recipe-img">
+			<img src="{{recipe.image.src}}" alt="{{recipe.image.description}}" class="img-responsive recipe-img">
 		</div>
 	</div>
 </div>
@@ -34,9 +25,9 @@
 	<div class="col-sm-6">
 		<h2>Instructions</h2>
 		<ol>
-			<li class="instruction">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis, iusto aliquid quod veniam, eius nobis odio dicta, unde dolorum voluptatem facere quisquam assumenda quas nisi! Cupiditate sit aspernatur labore debitis.</li>
-			<li class="instruction">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam quia quo harum et sequi, possimus veritatis numquam temporibus rem qui obcaecati sunt accusamus pariatur expedita optio doloremque dolorem, animi nemo.</li>
-			<li class="instruction">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa modi odit quam voluptatem tempora nostrum fugiat tenetur sunt non consequuntur. Dolor commodi impedit accusantium, vitae officiis qui error, aperiam quaerat.</li>
+			{{#each recipe.instructions}}
+				<li class="instruction">{{this}}</li>
+			{{/each}}
 		</ol>
 	</div>
 	<div class="col-sm-5 col-sm-offset-1 col-md-5 col-md-offset-1 col-xs-6 col-xs-offset-3">
@@ -47,26 +38,18 @@
 	<div class="col-xs-12 col-md-6">
 		<h2>Reviews</h2>
 		<div class="review-container">
-			<div class="row">
-				<div class="review">
-					<div class="well well-sm review-header">
-						<span class="reviewAuthor">Andy Becker</span>
-					</div>
-					<div class="col-xs-12">
-							<p>This is my review.  I very much enjoyed it</p>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="review">
-					<div class="well well-sm">
-						<span>Andy Becker</span>
-					</div>
-					<div class="col-xs-12">
-							<p>This is my review.  I very much enjoyed it</p>
+			{{#each review}}
+				<div class="row">
+					<div class="review">
+						<div class="well well-sm review-header">
+							<span class="reviewAuthor">{{name}}</span>
+						</div>
+						<div class="col-xs-12">
+								<p>{{comment}}</p>
+						</div>
 					</div>
 				</div>
-			</div>
+			{{/each}}
 		</div>
 	</div>
 </div>

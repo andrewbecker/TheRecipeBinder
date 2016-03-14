@@ -5,6 +5,6 @@ var recipeController = require('../controllers/recipeController');
 
 /* GET home page. */
 router.get('/', homeController.index);
-router.get('/recipe', recipeController.findOne);
+router.get('/recipe/:id', recipeController.findOne);
 
 module.exports = router;
