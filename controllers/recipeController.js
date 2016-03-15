@@ -23,10 +23,7 @@ var review = [
 	}
 ];
 
-var user = {
-	first: 'Andy',
-	last: 'Becker'
-};
+var user = {first: 'Andy'};
 
 var categories = ['Breakfast', 'Lunch', 'Dinner'];
 
