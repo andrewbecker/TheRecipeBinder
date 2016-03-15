@@ -23,10 +23,19 @@ var review = [
 	}
 ];
 
+var user = {
+	first: 'Andy',
+	last: 'Becker'
+};
+
 var categories = ['Breakfast', 'Lunch', 'Dinner'];
 
 module.exports = {
-	findOne: function(req, res) {
-		res.render('recipe', { recipe: recipe, review: review, categories: categories });
+	viewRecipe: function(req, res) {
+		res.render('viewRecipe', { recipe: recipe, review: review, categories: categories, title: recipe.title });
+	},
+	newRecipe: function(req, res) {
+		console.log(user);
+		res.render('newRecipe', { title: 'New Recipe', user: user});
 	}
 };
