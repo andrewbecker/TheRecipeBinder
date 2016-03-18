@@ -2,7 +2,6 @@ var db = require('../db');
 var _ = require('underscore');
 var fs = require('fs');
 var path = require('path');
-var testData = require('../sandbox/test');
 
 var userMain = {first: 'Andy'};
 
@@ -45,7 +44,7 @@ module.exports = {
 	},
 	doNewRecipe: function(req, res) {
 		if (req.file) {
-
+			console.log(req.file.path);
 			var tempPath = req.file.path,
 				ext = path.extname(req.file.originalname).toLowerCase(),
 				targetPath = path.resolve('./public/finalUpload/' + req.file.filename + ext);
