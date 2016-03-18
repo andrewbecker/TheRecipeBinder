@@ -1,38 +1,71 @@
-var recipe = {
-	title: 'Apple Pie',
-	ingredients: ['Apples', 'Pie crust', 'Cinnamon', 'Apples', 'Pie crust', 'Water', 'Sugar', 'Pans'],
-	instructions: [
-		'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis, iusto aliquid quod veniam, eius nobis odio dicta, unde dolorum voluptatem facere quisquam assumenda quas nisi! Cupiditate sit aspernatur labore debitis.',
-		'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis, iusto aliquid quod veniam, eius nobis odio dicta, unde dolorum voluptatem facere quisquam assumenda quas nisi! Cupiditate sit aspernatur labore debitis.',
-		'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis, iusto aliquid quod veniam, eius nobis odio dicta, unde dolorum voluptatem facere quisquam assumenda quas nisi! Cupiditate sit aspernatur labore debitis.',
-	],
-	image: {
-		src: '/images/apple_pie.jpg',
-		description: 'Apple Pie'
-	}
-};
+var db = require('../db');
+var _ = require('underscore');
+var fs = require('fs');
+var path = require('path');
+var testData = require('../sandbox/test');
 
-var review = [
-	{
-		name: 'Andy Becker',
-		comment: 'I enjoyed this recipe'
-	},
-	{
-		name: 'John Smith',
-		comment: 'Tasty'
-	}
-];
+var userMain = {first: 'Andy'};
 
-var user = {first: 'Andy'};
+var categoriesMain = ['Breakfast', 'Lunch', 'Dinner'];
 
-var categories = ['Breakfast', 'Lunch', 'Dinner'];
+// var sendJsonResponse = function(res, status, content) {
+// 	res.status(status);
+// 	res.json(content);
+// };
 
 module.exports = {
 	viewRecipe: function(req, res) {
-		res.render('viewRecipe', { recipe: recipe, review: review, categories: categories, title: recipe.title });
+		var recipeId = parseInt(req.params.id, 10);
+
+		db.recipe.findById(recipeId, {
+			include: [{
+				model: db.review
+			}]
+		}).then(function(recipe) {
+			if (!recipe) {
+				res.status(404);
+				res.render('error', {
+					message: 'recipe not found'
+				});
+			} else {
+				// recipe.ingredients = recipe.ingredients.replace(/\s+/g, '').split("\n");
+				recipe.ingredients = recipe.ingredients.split("\r\n");
+				recipe.instructions = recipe.instructions.split("\r\n");
+				console.log(recipe);
+				console.log('******************************');
+				console.log(recipe.reviews);
+				res.render('viewRecipe', { recipe: recipe, review: recipe.reviews, categories: categoriesMain, title: recipe.title });
+			}
+			
+		});
+
 	},
 	newRecipe: function(req, res) {
-		console.log(user);
-		res.render('newRecipe', { title: 'New Recipe', user: user});
+		res.render('newRecipe', { title: 'New Recipe', user: userMain});
+	},
+	doNewRecipe: function(req, res) {
+		if (req.file) {
+
+			var tempPath = req.file.path,
+				ext = path.extname(req.file.originalname).toLowerCase(),
+				targetPath = path.resolve('./public/finalUpload/' + req.file.filename + ext);
+			var newFileName = req.file.filename + ext;
+
+
+			fs.rename(tempPath, targetPath, function (err) {
+			});
+		}
+
+
+
+
+		var body = _.pick(req.body, 'title', 'description', 'ingredients', 'instructions', 'yield', 'prep_time', 'cook_time');
+		body.image = newFileName;
+
+		db.recipe.create(body).then(function(recipe) {
+			res.redirect('/recipe/' + recipe.id);
+		}, function(e) {
+			res.render('error', {message: e.toString()});
+		});
 	}
 };

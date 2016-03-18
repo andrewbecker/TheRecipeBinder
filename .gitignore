@@ -31,3 +31,10 @@ npm-debug.log
 
 # DS_STORE
 .DS_Store
+
+# Databases
+*.sqlite
+
+public/uploads
+public/finalUpload
+sandbox
