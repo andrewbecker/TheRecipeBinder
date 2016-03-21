@@ -7,6 +7,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var multer = require('multer');
+var methodOverride = require('method-override');
+var rmdir = require('rimraf');
+var fs = require('fs');
 
 var routes = require('./routes/index');
 // var users = require('./routes/users');
@@ -24,6 +27,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended: false
 }));
+app.use(methodOverride('_method'));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -61,10 +65,22 @@ app.use(function(err, req, res, next) {
 	});
 });
 
+var doSync = false;
+
 db.sequelize.sync({
-	force: true
+	force: doSync
 }).then(function() {
 	console.log('Sequelize synced!');
+	if (doSync) {
+		rmdir('./public/finalUpload', function(err) {
+			if (err) { console.log(error) };
+
+			if (!fs.existsSync('./public/finalUpload')) {
+				fs.mkdirSync('./public/finalUpload');
+			}
+		});
+		
+	}
 	// db.recipe.create({
 	// 	title: 'Apple Pie',
 	// 	description: 'A great pie for any day of the week!',

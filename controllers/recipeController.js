@@ -30,10 +30,7 @@ module.exports = {
 				// recipe.ingredients = recipe.ingredients.replace(/\s+/g, '').split("\n");
 				recipe.ingredients = recipe.ingredients.split("\r\n");
 				recipe.instructions = recipe.instructions.split("\r\n");
-				console.log(recipe);
-				console.log('******************************');
-				console.log(recipe.reviews);
-				res.render('viewRecipe', { recipe: recipe, review: recipe.reviews, categories: categoriesMain, title: recipe.title });
+				res.render('viewRecipe', { recipe: recipe, review: recipe.reviews, categories: categoriesMain, title: recipe.title, admin: true });
 			}
 			
 		});
@@ -44,7 +41,6 @@ module.exports = {
 	},
 	doNewRecipe: function(req, res) {
 		if (req.file) {
-			console.log(req.file.path);
 			var tempPath = req.file.path,
 				ext = path.extname(req.file.originalname).toLowerCase(),
 				targetPath = path.resolve('./public/finalUpload/' + req.file.filename + ext);
@@ -57,7 +53,6 @@ module.exports = {
 
 
 
-
 		var body = _.pick(req.body, 'title', 'description', 'ingredients', 'instructions', 'yield', 'prep_time', 'cook_time');
 		body.image = newFileName;
 
@@ -65,6 +60,75 @@ module.exports = {
 			res.redirect('/recipe/' + recipe.id);
 		}, function(e) {
 			res.render('error', {message: e.toString()});
+		});
+	},
+	editRecipe: function(req, res) {
+		var recipeId = parseInt(req.params.id, 10);
+
+		db.recipe.findById(recipeId, {
+		}).then(function(recipe) {
+			var title = 'Update - ' + recipe.title;
+			res.render('updateRecipe', { recipe: recipe, title: title });
+		});
+	},
+	updateRecipe: function(req, res) {
+		var recipeId = parseInt(req.params.id, 10);
+		var body = _.pick(req.body, 'title', 'description', 'ingredients', 'instructions', 'yield', 'prep_time', 'cook_time');
+		
+		db.recipe.findOne({
+			where: {
+				id: recipeId
+			}
+		}).then(function (recipe) {
+			if (recipe) {
+				if (req.file) {
+					var oldFileName = recipe.image;
+					var tempPath = req.file.path,
+						ext = path.extname(req.file.originalname).toLowerCase(),
+						targetPath = path.resolve('./public/finalUpload/' + req.file.filename + ext);
+					var newFileName = req.file.filename + ext;
+
+					body.image = newFileName;
+
+
+					fs.rename(tempPath, targetPath, function (err) {
+						if (err) { throw err; }
+
+						fs.unlink(path.resolve('./public/finalUpload/' + oldFileName), function(err) {
+							console.log(err);
+						});
+					});
+				}
+
+				recipe.update(body).then(function(recipe) {
+					res.redirect('/recipe/' + recipe.id);
+				}, function(e) {
+					res.render('error', {message: e.toString()});
+				});
+			}
+		});
+	},
+	deleteRecipe: function(req, res) {
+		var recipeId = parseInt(req.params.id, 10);
+		db.recipe.findOne({
+			where: {
+				id: recipeId
+			}
+		}).then(function (recipe) {
+			fs.unlink(path.resolve('./public/finalUpload/' + recipe.image), function (err) {
+				if (err) { throw err; }
+
+				db.recipe.destroy({
+					where: {
+						id: recipeId
+					}
+				}).then(function(rowsDeleted) {
+					console.log(rowsDeleted);
+					res.redirect('/');
+				}, function() {
+					res.render('error', { message: 'There was an error deleting recipe' });
+				});
+			});
 		});
 	}
 };

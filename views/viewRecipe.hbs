@@ -1,7 +1,19 @@
 <div class="row page-header">
-	<div class="col-lg-12">
+	<div class="col-lg-8">
 		<h1>{{recipe.title}}</h1>
 	</div>
+	
+	{{#if admin}}
+		<div class="col-lg-2">
+			<a class="btn btn-primary btn-block btn-lg" href="/recipe/update/{{recipe.id}}">Edit</a>
+		</div>
+		<div class="col-lg-2">
+			<form action="/recipe/delete/{{recipe.id}}?_method=DELETE" method="post">
+				<button class="btn btn-danger btn-block btn-lg" type="submit">Delete</button>
+			</form>
+		</div>
+	{{/if}}
+	
 </div>
 <div class="row">
 	<!-- Left column for ingredients -->
