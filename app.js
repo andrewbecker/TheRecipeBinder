@@ -103,7 +103,7 @@ db.sequelize.sync({
 	// 	recipeId: 1
 	// });
 	// db.category.create({
-	// 	category: 'Lunch'
+	// 	category: 'Dinner'
 	// });
 });
 

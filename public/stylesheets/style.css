@@ -36,3 +36,28 @@ span.glyphicon {
 .cook_times { margin-bottom: 20px; }
 .cook-time, .prep-time { border-right: 1px solid black;  }
 time { display:block; }
+
+.thumbnail-fit {
+	object-fit: cover;
+}
+
+@media only screen and (min-width: 1200px) {
+	.thumbnail-fit {
+		height: 270px;
+	}
+}
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+	.thumbnail-fit {
+		height: 219.984px;
+	}
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+	.thumbnail-fit {
+		height: 165px;
+	}
+}
+/*@media only screen and (max-width: 767px) {
+	.thumbnail-fit {
+		height: 100px;
+	}
+}*/

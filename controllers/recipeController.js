@@ -115,19 +115,21 @@ module.exports = {
 				id: recipeId
 			}
 		}).then(function (recipe) {
-			fs.unlink(path.resolve('./public/finalUpload/' + recipe.image), function (err) {
-				if (err) { throw err; }
-
-				db.recipe.destroy({
-					where: {
-						id: recipeId
-					}
-				}).then(function(rowsDeleted) {
-					console.log(rowsDeleted);
-					res.redirect('/');
-				}, function() {
-					res.render('error', { message: 'There was an error deleting recipe' });
+			if (recipe.image) {
+				fs.unlink(path.resolve('./public/finalUpload/' + recipe.image), function (err) {
+					if (err) { throw err; }
 				});
+			}
+
+			db.recipe.destroy({
+				where: {
+					id: recipeId
+				}
+			}).then(function(rowsDeleted) {
+				console.log(rowsDeleted);
+				res.redirect('/');
+			}, function() {
+				res.render('error', { message: 'There was an error deleting recipe' });
 			});
 		});
 	}
