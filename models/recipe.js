@@ -21,11 +21,11 @@ module.exports = function(sequelize, DataTypes) {
 		},
 		prep_time: {
 			type: DataTypes.INTEGER,
-			defaultValue: 0
+			defaultValue: '0'
 		},
 		cook_time: {
 			type: DataTypes.INTEGER,
-			defaultValue: 0
+			defaultValue: '0'
 		},
 		image: {
 			type: DataTypes.STRING
