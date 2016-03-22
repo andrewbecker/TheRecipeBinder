@@ -20,10 +20,12 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.STRING
 		},
 		prep_time: {
-			type: DataTypes.INTEGER
+			type: DataTypes.INTEGER,
+			defaultValue: 0
 		},
 		cook_time: {
-			type: DataTypes.INTEGER
+			type: DataTypes.INTEGER,
+			defaultValue: 0
 		},
 		image: {
 			type: DataTypes.STRING
