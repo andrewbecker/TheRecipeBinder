@@ -12,6 +12,14 @@ var categoriesMain = ['Breakfast', 'Lunch', 'Dinner'];
 // 	res.json(content);
 // };
 
+var generateHoursMinutes = function(minutes) {
+	var time = {};
+	time.hours = Math.floor(minutes / 60);
+	time.min = minutes % 60;
+
+	return time;
+}
+
 module.exports = {
 	viewRecipe: function(req, res) {
 		var recipeId = parseInt(req.params.id, 10);
@@ -27,7 +35,10 @@ module.exports = {
 					message: 'recipe not found'
 				});
 			} else {
-				// recipe.ingredients = recipe.ingredients.replace(/\s+/g, '').split("\n");
+				recipe.total_time = generateHoursMinutes(recipe.prep_time + recipe.cook_time);
+				recipe.prep_time = generateHoursMinutes(recipe.prep_time);
+				recipe.cook_time = generateHoursMinutes(recipe.cook_time);
+				
 				recipe.ingredients = recipe.ingredients.split("\r\n");
 				recipe.instructions = recipe.instructions.split("\r\n");
 				res.render('viewRecipe', { recipe: recipe, review: recipe.reviews, categories: categoriesMain, title: recipe.title, admin: true });

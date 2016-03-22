@@ -43,6 +43,12 @@
 <div class="row">
 	<div class="col-sm-6">
 		<h2>Instructions</h2>
+		<ul class="list-unstyled list-inline prepTimes">
+			<li class="prep-logo text-center"><span class="glyphicon glyphicon-time" style="font-size: 3em;"></span></li>
+			<li class="prep-time text-center"><p>Prep</p><span>{{recipe.prep_time.hours}}h {{recipe.prep_time.min}}m</span></li>
+			<li class="prep-time text-center"><p>Cook</p><span>{{recipe.cook_time.hours}}h {{recipe.cook_time.min}}m</span></li>
+			<li class="prep-time text-center"><p>Total</p><span>{{recipe.total_time.hours}}h {{recipe.total_time.min}}m</span></li>
+		</ul>
 		<ol>
 			{{#each recipe.instructions}}
 				<li class="instruction">{{this}}</li>

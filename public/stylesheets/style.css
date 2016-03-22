@@ -34,7 +34,15 @@ span.glyphicon {
 
 .servings { margin-top:20px; display: block; }
 .cook_times { margin-bottom: 20px; }
-.cook-time, .prep-time { border-right: 1px solid black;  }
+
+.prepTimes { margin-bottom: 30px;}
+.prep-time { border-right: 1px solid black; width: 80px; padding: 0px; line-height: 1.5em;}
+.prep-time:first-child { width: auto; }
+.prep-time:first-child, .prep-time:last-child { border: none; }
+.prep-logo { padding: none; margin-left: 10px; }
+.prep-logo span { margin-right: 0px; }
+.prep-time p { margin-bottom: 0px; }
+
 time { display:block; }
 
 .thumbnail-fit {
