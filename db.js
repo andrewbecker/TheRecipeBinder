@@ -4,7 +4,7 @@ var sequelize;
 
 if (env === 'production') {
 	sequelize = new Sequelize('caroli30_recipes', 'caroli30_noderec', 'U8Er7g55yILmbtfkxH', {
-		dialect: 'postgres'
+		dialect: 'mysql'
 	});
 } else {
 	sequelize = new Sequelize(undefined, undefined, undefined, {
