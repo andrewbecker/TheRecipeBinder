@@ -3,7 +3,7 @@ var router = express.Router();
 var homeController = require('../controllers/homeController');
 var recipeController = require('../controllers/recipeController');
 var multer = require('multer');
-var upload = multer({ dest: 'public/uploads/' })
+var upload = multer({ dest: './public/uploads/' })
 
 /* GET home page. */
 router.get('/', homeController.index);

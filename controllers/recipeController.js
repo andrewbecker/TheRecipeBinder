@@ -38,7 +38,7 @@ module.exports = {
 				recipe.total_time = generateHoursMinutes(recipe.prep_time + recipe.cook_time);
 				recipe.prep_time = generateHoursMinutes(recipe.prep_time);
 				recipe.cook_time = generateHoursMinutes(recipe.cook_time);
-				
+
 				recipe.ingredients = recipe.ingredients.split("\r\n");
 				recipe.instructions = recipe.instructions.split("\r\n");
 				res.render('viewRecipe', { recipe: recipe, review: recipe.reviews, categories: categoriesMain, title: recipe.title, admin: true });
@@ -70,6 +70,7 @@ module.exports = {
 		db.recipe.create(body).then(function(recipe) {
 			res.redirect('/recipe/' + recipe.id);
 		}, function(e) {
+			console.log(e.message);
 			res.render('error', {message: e.toString()});
 		});
 	},

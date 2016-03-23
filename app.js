@@ -65,10 +65,11 @@ app.use(function(err, req, res, next) {
 	});
 });
 
-var doSync = false;
+var doSync = true;
 
 db.sequelize.sync({
-	force: false
+	logging: console.log,
+	force: doSync
 }).then(function() {
 	console.log('Sequelize synced!');
 	if (doSync) {
