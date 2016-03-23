@@ -3,7 +3,7 @@ var env = process.env.NODE_ENV || 'development';
 var sequelize;
 
 if (env === 'production') {
-	sequelize = new Sequelize('caroli30_recipes', 'caroli30_recad', '{{}}', {
+	sequelize = new Sequelize('caroli30_recipes', 'caroli30_noderec', 'Synm8769', {
 		dialect: 'mysql'
 	});
 } else {
