@@ -31,7 +31,7 @@ module.exports = {
 			req.session.auth = tokenInstance.token;
 			res.redirect('/');
 		}).catch(function () {
-			res.status(401).send();
+			res.redirect('/');
 		});
 	},
 	loginForm: function(req, res) {

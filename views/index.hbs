@@ -20,29 +20,21 @@
 		</div>
 	{{/if}}
 </div>
-{{!-- <div class="row">
-	<h2 class="col-xs-12">Breakfast</h2>
-</div>
-<div class="row">
-	<div class="col-xs-4">
-		<img class="img-responsive" src="/images/apple_pie.jpg" alt="Apple Pie">
-		<div class="caption">
-			<h3>Apple Pie</h3>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing</p>
-		</div>
+{{#if allRecipes}}
+	<div class="row">
+		<h2 class="col-xs-12">All Recipes</h2>
 	</div>
-	<div class="col-xs-4">
-		<img class="img-responsive" src="/images/apple_pie.jpg" alt="Apple Pie">
-		<div class="caption">
-			<h3>Apple Pie</h3>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing</p>
-		</div>
+	<div class="row">
+		{{#each allRecipes}}
+			<div class="col-xs-4">
+				{{#if image}}
+					<a href="/recipe/{{id}}"><img class="thumbnail-fit img-responsive" src="/finalUpload/{{image}}" alt="{{title}}"></a>
+				{{/if}}
+				<div class="caption">
+					<h3><a href="/recipe/{{id}}">{{title}}</a></h3>
+					<p>{{description}}</p>
+				</div>
+			</div>
+		{{/each}}
 	</div>
-	<div class="col-xs-4">
-		<img class="img-responsive" src="/images/apple_pie.jpg" alt="Apple Pie">
-		<div class="caption">
-			<h3>Apple Pie</h3>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing</p>
-		</div>
-	</div>
-</div> --}}
+{{/if}}
