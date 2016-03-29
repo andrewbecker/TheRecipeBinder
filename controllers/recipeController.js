@@ -22,6 +22,10 @@ var generateHoursMinutes = function(minutes) {
 
 module.exports = {
 	viewRecipe: function(req, res) {
+		var user;
+		if (req.session.user) {
+			user = req.session.user;
+		}
 		var recipeId = parseInt(req.params.id, 10);
 
 		db.recipe.findById(recipeId, {
@@ -39,16 +43,18 @@ module.exports = {
 				recipe.prep_time = generateHoursMinutes(recipe.prep_time);
 				recipe.cook_time = generateHoursMinutes(recipe.cook_time);
 
-				recipe.ingredients = recipe.ingredients.split("\r\n");
-				recipe.instructions = recipe.instructions.split("\r\n");
-				res.render('viewRecipe', { recipe: recipe, review: recipe.reviews, categories: categoriesMain, title: recipe.title, admin: true });
+				if (recipe.ingredients) { recipe.ingredients = recipe.ingredients.split("\r\n"); }
+				if (recipe.instructions) { recipe.instrcutions = recipe.instructions.split("\r\n"); }
+				res.render('viewRecipe', { recipe: recipe, review: recipe.reviews, categories: categoriesMain, title: recipe.title, user: user });
 			}
 			
 		});
 
 	},
 	newRecipe: function(req, res) {
-		res.render('newRecipe', { title: 'New Recipe', user: userMain});
+		// Get user from requireAuthentication middleware
+		user = _.pick(req.user, 'first_name');
+		res.render('newRecipe', { title: 'New Recipe', user: user});
 	},
 	doNewRecipe: function(req, res) {
 		if (req.file) {
@@ -62,8 +68,9 @@ module.exports = {
 			});
 		}
 
-
-
+		for (var key in req.body) {
+			req.body[key] = req.body[key] || undefined;
+		}
 		var body = _.pick(req.body, 'title', 'description', 'ingredients', 'instructions', 'yield', 'prep_time', 'cook_time');
 		body.image = newFileName;
 

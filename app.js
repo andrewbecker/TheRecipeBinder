@@ -10,9 +10,11 @@ var multer = require('multer');
 var methodOverride = require('method-override');
 var rmdir = require('rimraf');
 var fs = require('fs');
+var flash = require('connect-flash');
+var session = require('express-session');
 
 var routes = require('./routes/index');
-// var users = require('./routes/users');
+var users = require('./routes/users');
 
 var app = express();
 
@@ -30,9 +32,18 @@ app.use(bodyParser.urlencoded({
 app.use(methodOverride('_method'));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(flash());
+app.use(session({
+  name: 'session',
+  secret: 'random_string_goes_here',
+  resave: false,
+  saveUninitialized: false
+}));
+
+
 
 app.use('/', routes);
-//app.use('/users', users);
+app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -65,7 +76,7 @@ app.use(function(err, req, res, next) {
 	});
 });
 
-var doSync = true;
+var doSync = false;
 
 db.sequelize.sync({
 	logging: console.log,
@@ -75,43 +86,16 @@ db.sequelize.sync({
 	if (doSync) {
 		rmdir('./public/finalUpload', function(err) {
 			if (err) { console.log(error) };
-
-			if (!fs.existsSync('./public/finalUpload')) {
-				fs.mkdirSync('./public/finalUpload');
-			}
 		});
-		
 	}
+
 	if (!fs.existsSync('./public/finalUpload')) {
-				fs.mkdirSync('./public/finalUpload');
-			}
+		fs.mkdirSync('./public/finalUpload');
+	}
 	if (!fs.existsSync('./public/upload')) {
-				fs.mkdirSync('./public/upload');
-			}
-	// db.recipe.create({
-	// 	title: 'Apple Pie',
-	// 	description: 'A great pie for any day of the week!',
-	// 	ingredients: 'Apple, Cinnamon, Sugar, Flour, Butter',
-	// 	instructions: 'Step 1\nStep 2\nStep 3\nStep 4',
-	// 	yield: '4 servings',
-	// 	prep_time: 30,
-	// 	cook_time: 45,
-	// 	image: '/images/apple_pie.jpg',
-	// }).then(function(recipe){
-	// 	db.category.create({
-	// 		category: 'Breakfast'
-	// 	}).then(function(category){
-	// 		recipe.addCategory(category);
-	// 	});
-	// });
-	// db.review.create({
-	// 	name: 'John Smith',
-	// 	comment: 'Great food',
-	// 	recipeId: 1
-	// });
-	// db.category.create({
-	// 	category: 'Dinner'
-	// });
+		fs.mkdirSync('./public/upload');
+	}
+
 });
 
 module.exports = app;

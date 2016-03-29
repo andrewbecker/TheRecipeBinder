@@ -43,6 +43,10 @@ span.glyphicon {
 .prep-logo span { margin-right: 0px; }
 .prep-time p { margin-bottom: 0px; }
 
+.nav-login-form { margin-left: 5px; margin-right: 5px; }
+
+footer { margin-top: 20px; padding-top: 10px; padding-bottom: 10px; }
+
 time { display:block; }
 
 .thumbnail-fit {

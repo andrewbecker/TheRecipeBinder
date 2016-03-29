@@ -1,8 +1,8 @@
 module.exports = function(sequelize, DataTypes) {
 	return sequelize.define('recipe', {
 		title: {
-			type: DataTypes.STRING
-			
+			type: DataTypes.STRING,
+			allowNull: false
 		},
 		description: {
 			type: DataTypes.TEXT
@@ -18,11 +18,13 @@ module.exports = function(sequelize, DataTypes) {
 		},
 		prep_time: {
 			type: DataTypes.INTEGER,
-			allowNull: false
+			allowNull: false,
+			defaultValue: 0
 		},
 		cook_time: {
 			type: DataTypes.INTEGER,
-			allowNull: false
+			allowNull: false,
+			defaultValue: 0
 		},
 		image: {
 			type: DataTypes.STRING
