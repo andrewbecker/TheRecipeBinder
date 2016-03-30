@@ -6,7 +6,8 @@
     "start": "node ./bin/www"
   },
   "engines": {
-    "node": "5.9.0"
+    "node": "5.9.0",
+    "npm": "3.7.3"
   },
   "dependencies": {
     "async": "^1.5.2",
