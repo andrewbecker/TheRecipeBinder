@@ -35,7 +35,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 app.use(session({
   name: 'session',
-  secret: process.env.cookieSecret || 'random_string_goes_here',
+  secret: 'random_string_goes_here',
   resave: false,
   saveUninitialized: false
 }));
