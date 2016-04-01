@@ -57,22 +57,21 @@ module.exports = {
 		res.render('newRecipe', { title: 'New Recipe', user: user});
 	},
 	doNewRecipe: function(req, res) {
-		// if (req.file) {
-		// 	var tempPath = req.file.path,
-		// 		ext = path.extname(req.file.originalname).toLowerCase(),
-		// 		targetPath = path.resolve('./public/finalUpload/' + req.file.filename + ext);
-		// 	var newFileName = req.file.filename + ext;
+		if (req.file) {
+			var tempPath = req.file.path,
+				ext = path.extname(req.file.originalname).toLowerCase(),
+				targetPath = path.resolve('./public/finalUpload/' + req.file.filename + ext);
+			var newFileName = req.file.filename + ext;
 
 
-		// 	fs.rename(tempPath, targetPath, function (err) {
-		// 	});
-		// }
+			fs.renameSync(tempPath, targetPath);
+		}
 
 		for (var key in req.body) {
 			req.body[key] = req.body[key] || undefined;
 		}
 		var body = _.pick(req.body, 'title', 'description', 'ingredients', 'instructions', 'yield', 'prep_time', 'cook_time');
-		// body.image = newFileName;
+		body.image = newFileName;
 
 		db.recipe.create(body).then(function(recipe) {
 			res.redirect('/recipe/view/' + recipe.id);
