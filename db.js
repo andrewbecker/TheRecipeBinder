@@ -3,7 +3,7 @@ var env = process.env.NODE_ENV || 'development';
 var sequelize;
 
 if (env === 'production') {
-	sequelize = new Sequelize(process.env.DB_TABLE, process.env.DB_USER, process.env.DB_PASS, {
+	sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USER, process.env.DB_PASS, {
 		dialect: 'mysql'
 	});
 } else {
