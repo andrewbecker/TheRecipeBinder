@@ -5,6 +5,7 @@ var path = require('path');
 
 var userMain = {first: 'Andy'};
 
+var x = 10;
 
 var categoriesMain = ['Breakfast', 'Lunch', 'Dinner'];
 
