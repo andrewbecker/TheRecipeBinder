@@ -109,13 +109,9 @@ module.exports = {
 					body.image = newFileName;
 
 
-					fs.rename(tempPath, targetPath, function (err) {
-						if (err) { throw err; }
+					fs.renameSync(tempPath, targetPath);
 
-						fs.unlink(path.resolve('./public/finalUpload/' + oldFileName), function(err) {
-							console.log(err);
-						});
-					});
+					fs.unlinkSync(path.resolve('./public/finalUpload/' + oldFileName);
 				}
 
 				recipe.update(body).then(function(recipe) {
@@ -134,9 +130,7 @@ module.exports = {
 			}
 		}).then(function (recipe) {
 			if (recipe.image) {
-				fs.unlink(path.resolve('./public/finalUpload/' + recipe.image), function (err) {
-					if (err) { throw err; }
-				});
+				fs.unlinkSync(path.resolve('./public/finalUpload/' + recipe.image);
 			}
 
 			db.recipe.destroy({
