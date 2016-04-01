@@ -7,13 +7,13 @@ if (env === 'production') {
 		dialect: 'mysql'
 	});
 } else {
-	sequelize = new Sequelize(undefined, undefined, undefined, {
-		'dialect': 'sqlite',
-		'storage': __dirname + '/data/dev-ryan-recipe.sqlite'
-	});
-	// sequelize = new Sequelize('ryan_recipes', 'root', 'my_password', {
-	// 	dialect: 'mysql'
+	// sequelize = new Sequelize(undefined, undefined, undefined, {
+	// 	'dialect': 'sqlite',
+	// 	'storage': __dirname + '/data/dev-ryan-recipe.sqlite'
 	// });
+	sequelize = new Sequelize('ryan_recipes', 'root', 'my_password', {
+		dialect: 'mysql'
+	});
 }
 
 

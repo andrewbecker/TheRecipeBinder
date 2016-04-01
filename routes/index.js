@@ -13,20 +13,13 @@ var middleware = require('../middleware')(db);
 router.get('/', homeController.index);
 router.get('/recipe/view/:id', recipeController.viewRecipe);
 
+/* Following routes require the user to be logged in */
 router.all(middleware.requireAuthentication);
-
 
 router.get('/recipe/new', recipeController.newRecipe);
 router.post('/recipe/new', upload.single('image'), recipeController.doNewRecipe);
-
 router.get('/recipe/update/:id', recipeController.editRecipe);
 router.put('/recipe/update/:id', upload.single('image'), recipeController.updateRecipe);
 router.delete('/recipe/delete/:id', recipeController.deleteRecipe);
-
-// router.get('/users/login', authController.loginForm);
-// // router.get('/users/signup', authController.signup);
-// // router.post('/users', authController.createAccount);
-// router.post('/users/login', authController.login);
-// router.get('/users/logout', authController.logout);
 
 module.exports = router;

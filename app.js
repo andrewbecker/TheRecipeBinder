@@ -92,8 +92,8 @@ db.sequelize.sync({
 	if (!fs.existsSync('./public/finalUpload')) {
 		fs.mkdirSync('./public/finalUpload');
 	}
-	if (!fs.existsSync('./public/upload')) {
-		fs.mkdirSync('./public/upload');
+	if (!fs.existsSync('./public/uploads')) {
+		fs.mkdirSync('./public/uploads');
 	}
 
 });
