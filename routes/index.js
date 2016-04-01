@@ -11,7 +11,7 @@ var middleware = require('../middleware')(db);
 
 /* GET home page. */
 router.get('/', homeController.index);
-router.get('/recipe/:id', recipeController.viewRecipe);
+router.get('/recipe/view/:id', recipeController.viewRecipe);
 
 router.all(middleware.requireAuthentication);
 
