@@ -4,6 +4,7 @@ var db = require('../db'),
 
 module.exports = {
 	signup: function(req, res) {
+		var x = 10;
 		res.render('signup');
 	},
 	createAccount: function(req, res) {
