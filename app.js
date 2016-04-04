@@ -12,6 +12,9 @@ var rmdir = require('rimraf');
 var fs = require('fs');
 var flash = require('connect-flash');
 var session = require('express-session');
+var redis = require('redis');
+var redisStore = require('connect-redis')(session);
+var client = redis.createClient();
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -34,8 +37,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 app.use(session({
-  name: 'session',
   secret: 'random_string_goes_here',
+  store:  new redisStore({ host: 'localhost', port: 6379, client: client,ttl :  260}),
   resave: false,
   saveUninitialized: false
 }));
