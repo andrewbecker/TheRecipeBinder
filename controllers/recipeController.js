@@ -62,7 +62,7 @@ module.exports = {
 		if (req.file) {
 			var tempPath = req.file.path,
 				ext = path.extname(req.file.originalname).toLowerCase(),
-				targetPath = path.resolve('./public/finalUpload/' + req.file.filename + ext);
+				targetPath = path.resolve('/root/node/recipes/public/finalUploads' + req.file.filename + ext);
 			var newFileName = req.file.filename + ext;
 
 
