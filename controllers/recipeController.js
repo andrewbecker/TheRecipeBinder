@@ -135,7 +135,7 @@ module.exports = {
 			}
 		}).then(function (recipe) {
 			if (recipe.image) {
-				fs.unlinkSync(path.resolve('./public/finalUpload/' + recipe.image));
+				fs.unlinkSync(path.resolve('/root/node/recipes/public/finalUpload/' + recipe.image));
 			}
 
 			db.recipe.destroy({
