@@ -73,6 +73,7 @@ module.exports = {
 			req.body[key] = req.body[key] || undefined;
 		}
 		var body = _.pick(req.body, 'title', 'description', 'ingredients', 'instructions', 'yield', 'prep_time', 'cook_time');
+		body.userId = req.session.user.id;
 		body.image = newFileName;
 
 		db.recipe.create(body).then(function(recipe) {
@@ -113,11 +114,13 @@ module.exports = {
 
 					fs.renameSync(tempPath, targetPath);
 
-					fs.unlinkSync(path.resolve('./public/finalUpload/' + oldFileName));
+					if (oldFileName) {
+						fs.unlinkSync(path.resolve('./public/finalUpload/' + oldFileName));
+					}
 				}
 
 				recipe.update(body).then(function(recipe) {
-					res.redirect('/recipe/' + recipe.id);
+					res.redirect('/recipe/view/' + recipe.id);
 				}, function(e) {
 					res.render('error', {message: e.toString()});
 				});
@@ -146,5 +149,15 @@ module.exports = {
 				res.render('error', { message: 'There was an error deleting recipe' });
 			});
 		});
+	}, 
+	myRecipes: function(req, res) {
+		var user = req.session.user;
+		db.recipe.findAll({
+			where: {
+				userId: user.id
+			}
+		}).then(function(recipes) {
+			res.render('myRecipes', {recipes: recipes, user: user, title: 'Ryan Family Recipes'})
+		})
 	}
 };

@@ -32,6 +32,9 @@ db.Sequelize = Sequelize;
 db.review.belongsTo(db.recipe);
 db.recipe.hasMany(db.review);
 
+db.recipe.belongsTo(db.user);
+db.user.hasMany(db.recipe);
+
 db.recipe.belongsToMany (db.category, {as: 'category', through: 'RecipeCategory' });
 db.category.belongsToMany (db.recipe, {as: 'recipe', through: 'RecipeCategory' });
 

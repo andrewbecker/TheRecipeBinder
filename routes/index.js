@@ -16,6 +16,7 @@ router.get('/recipe/view/:id', recipeController.viewRecipe);
 /* Following routes require the user to be logged in */
 router.all(middleware.requireAuthentication);
 
+router.get('/myrecipes', recipeController.myRecipes);
 router.get('/recipe/new', recipeController.newRecipe);
 router.post('/recipe/new', upload.single('image'), recipeController.doNewRecipe);
 router.get('/recipe/update/:id', recipeController.editRecipe);
