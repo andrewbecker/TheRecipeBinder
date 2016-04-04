@@ -4,7 +4,7 @@ var homeController = require('../controllers/homeController');
 var recipeController = require('../controllers/recipeController');
 var authController = require('../controllers/authController');
 var multer = require('multer');
-var upload = multer({ dest: './public/uploads/' });
+var upload = multer({ dest: '/root/node/recipes/public/uploads' });
 var db = require('../db');
 var middleware = require('../middleware')(db);
 

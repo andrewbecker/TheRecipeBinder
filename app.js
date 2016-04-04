@@ -92,11 +92,20 @@ db.sequelize.sync({
 		});
 	}
 
-	if (!fs.existsSync('./public/finalUpload')) {
-		fs.mkdirSync('./public/finalUpload');
-	}
-	if (!fs.existsSync('./public/uploads')) {
-		fs.mkdirSync('./public/uploads');
+	if (process.env.NODE_ENV === 'production') {
+		if (!fs.existsSync('/root/node/recipes/public/finalUpload')) {
+			fs.mkdirSync('/root/node/recipes/public/finalUpload');
+		}
+		if (!fs.existsSync('/root/node/recipes/public/uploads')) {
+			fs.mkdirSync('/root/node/recipes/public/uploads');
+		}
+	} else {
+		if (!fs.existsSync('./public/finalUpload')) {
+			fs.mkdirSync('./public/finalUpload');
+		}
+		if (!fs.existsSync('./public/uploads')) {
+			fs.mkdirSync('./public/uploads');
+		}
 	}
 
 });
