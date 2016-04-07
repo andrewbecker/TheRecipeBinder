@@ -18,6 +18,11 @@ module.exports = {
 	login: function(req, res) {
 		var body = _.pick(req.body, 'username', 'password');
 		var userInstance;
+		var originalUrl = req.header('Referer');
+		if (originalUrl === 'http://localhost:3000/users') {
+			originalUrl = '/';
+		}
+		console.log('Original URL: ' + originalUrl);
 
 		db.user.authenticate(body).then(function(user) {
 			var token = user.generateToken('authentication');
@@ -29,7 +34,7 @@ module.exports = {
 			});
 		}).then(function(tokenInstance) {
 			req.session.auth = tokenInstance.token;
-			res.redirect('/');
+			res.redirect(originalUrl || '/');
 		}).catch(function () {
 			res.redirect('/');
 		});
