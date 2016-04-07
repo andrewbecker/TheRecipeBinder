@@ -3,8 +3,14 @@ var router = express.Router();
 var homeController = require('../controllers/homeController');
 var recipeController = require('../controllers/recipeController');
 var authController = require('../controllers/authController');
+
+if (process.env.NODE_ENV === 'production') {
+	var tempUploadPath = '/root/node/recipes/public/uploads/'
+} else {
+	var tempUploadPath = './public/uploads/'
+}
 var multer = require('multer');
-var upload = multer({ dest: '/root/node/recipes/public/uploads' });
+var upload = multer({ dest: tempUploadPath });
 var db = require('../db');
 var middleware = require('../middleware')(db);
 

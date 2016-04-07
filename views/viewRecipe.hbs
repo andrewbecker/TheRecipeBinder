@@ -15,7 +15,7 @@
 	<div class="col-lg-8">
 		<h1>{{recipe.title}}</h1>
 	</div>
-	
+
 	<div class="col-lg-12">
 		<p>{{recipe.description}}</p>
 	</div>
@@ -48,6 +48,7 @@
 			<li class="prep-time text-center"><p>Prep</p><span>{{recipe.prep_time.hours}}h {{recipe.prep_time.min}}m</span></li>
 			<li class="prep-time text-center"><p>Cook</p><span>{{recipe.cook_time.hours}}h {{recipe.cook_time.min}}m</span></li>
 			<li class="prep-time text-center"><p>Total</p><span>{{recipe.total_time.hours}}h {{recipe.total_time.min}}m</span></li>
+			<li class="prep-time text-center"><p>Yield</p><span>{{recipe.yield}}</span></li>
 		</ul>
 		<ol>
 			{{#each recipe.instructions}}

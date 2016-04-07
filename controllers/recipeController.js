@@ -5,7 +5,11 @@ var path = require('path');
 
 var userMain = {first: 'Andy'};
 
-var x = 10;
+if (process.env.NODE_ENV === 'production') {
+	var finalUploadPath = '/root/node/recipes/public/finalUpload/';
+} else {
+	var finalUploadPath = './public/finalUpload/';
+}
 
 var categoriesMain = ['Breakfast', 'Lunch', 'Dinner'];
 
@@ -24,6 +28,7 @@ var generateHoursMinutes = function(minutes) {
 
 module.exports = {
 	viewRecipe: function(req, res) {
+		console.log('Full URL: ' + req.originalUrl);
 		var user;
 		if (req.session.user) {
 			user = req.session.user;
@@ -49,20 +54,21 @@ module.exports = {
 				if (recipe.instructions) { recipe.instrcutions = recipe.instructions.split("\r\n"); }
 				res.render('viewRecipe', { recipe: recipe, review: recipe.reviews, categories: categoriesMain, title: recipe.title, user: user });
 			}
-			
+
 		});
 
 	},
 	newRecipe: function(req, res) {
-		// Get user from requireAuthentication middleware
-		user = _.pick(req.user, 'first_name');
+		if (req.session.user) {
+			var user = req.session.user;
+		}
 		res.render('newRecipe', { title: 'New Recipe', user: user});
 	},
 	doNewRecipe: function(req, res) {
 		if (req.file) {
 			var tempPath = req.file.path,
 				ext = path.extname(req.file.originalname).toLowerCase(),
-				targetPath = path.resolve('/root/node/recipes/public/finalUpload/' + req.file.filename + ext);
+				targetPath = path.resolve(finalUploadPath + req.file.filename + ext);
 			var newFileName = req.file.filename + ext;
 
 
@@ -95,7 +101,7 @@ module.exports = {
 	updateRecipe: function(req, res) {
 		var recipeId = parseInt(req.params.id, 10);
 		var body = _.pick(req.body, 'title', 'description', 'ingredients', 'instructions', 'yield', 'prep_time', 'cook_time');
-		
+
 		db.recipe.findOne({
 			where: {
 				id: recipeId
@@ -106,7 +112,7 @@ module.exports = {
 					var oldFileName = recipe.image;
 					var tempPath = req.file.path,
 						ext = path.extname(req.file.originalname).toLowerCase(),
-						targetPath = path.resolve('./public/finalUpload/' + req.file.filename + ext);
+						targetPath = path.resolve(finalUploadPath + req.file.filename + ext);
 					var newFileName = req.file.filename + ext;
 
 					body.image = newFileName;
@@ -115,7 +121,7 @@ module.exports = {
 					fs.renameSync(tempPath, targetPath);
 
 					if (oldFileName) {
-						fs.unlinkSync(path.resolve('./public/finalUpload/' + oldFileName));
+						fs.unlinkSync(path.resolve(finalUploadPath + oldFileName));
 					}
 				}
 
@@ -135,7 +141,7 @@ module.exports = {
 			}
 		}).then(function (recipe) {
 			if (recipe.image) {
-				fs.unlinkSync(path.resolve('/root/node/recipes/public/finalUpload/' + recipe.image));
+				fs.unlinkSync(path.resolve(finalUploadPath + recipe.image));
 			}
 
 			db.recipe.destroy({
@@ -149,7 +155,7 @@ module.exports = {
 				res.render('error', { message: 'There was an error deleting recipe' });
 			});
 		});
-	}, 
+	},
 	myRecipes: function(req, res) {
 		var user = req.session.user;
 		db.recipe.findAll({

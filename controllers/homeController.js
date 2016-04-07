@@ -2,8 +2,8 @@ var db = require('../db');
 
 module.exports = {
 	index: function(req, res) {
-		var user;
-		if (req.session.user) {
+		var user = 0;
+		if (req.session && req.session.user) {
 			user = req.session.user;
 		}
 		var newRecipes;
@@ -26,7 +26,7 @@ module.exports = {
 				}).then(function(allRecipes) {
 					res.render('index', { recipes: recipes, categories: allCategories, allRecipes: allRecipes, user: user, title: 'Ryan Family Recipes'});
 				})
-				
+
 			});
 		}, function(e){
 			res.render('error', {message: e.toString()});
