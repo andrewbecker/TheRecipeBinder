@@ -22,8 +22,7 @@ module.exports = {
 		if (originalUrl === 'http://localhost:3000/users') {
 			originalUrl = '/';
 		}
-		console.log('Original URL: ' + originalUrl);
-
+		
 		db.user.authenticate(body).then(function(user) {
 			var token = user.generateToken('authentication');
 			userInstance = user;

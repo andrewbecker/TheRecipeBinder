@@ -38,3 +38,4 @@ npm-debug.log
 public/uploads
 public/finalUpload
 sandbox
+*.rdb

@@ -21,7 +21,7 @@
 				        <span class="icon-bar"></span>
 				        <span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="/">Ryan Family Recipes</a>
+					<a class="navbar-brand" href="/">My e-Recipe Book</a>
 				</div> {{!-- navbar-header --}}
 
 				<!-- Collect the nav links, forms, and other content for toggling -->
@@ -60,7 +60,7 @@
 								<li class="dropdown">
 									<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sign In <span class="caret"></span></a>
 									<ul class="dropdown-menu">
-										<form action="/users/login" method="POST" class="nav-login-form">
+										<form action="/users/login" class="login_form" method="POST" class="nav-login-form">
 											<input id="user_username" style="margin-bottom: 15px;" type="text" name="username" placeholder="Username" size="30" />
   											<input id="user_password" style="margin-bottom: 15px;" type="password" name="password" placeholder="Password" size="30" />
   											<input class="btn btn-primary" style="clear: left; width: 100%; height: 32px; font-size: 13px;" type="submit" name="commit" value="Sign In" />
@@ -86,5 +86,7 @@
    		<script src="https://code.jquery.com/jquery-1.12.2.min.js" integrity="sha256-lZFHibXzMHo3GGeehn1hudTAP3Sc0uKXBXAzHX1sjtk=" crossorigin="anonymous"></script>
    		{{!-- Bootstrap JS --}}
     	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+			<script type="text/javascript" src="/javascripts/jquery.validate.min.js"></script>
+			<script type="text/javascript" src="/javascripts/form_validator.js"></script>
   	</body>
 </html>
