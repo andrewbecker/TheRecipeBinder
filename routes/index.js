@@ -5,7 +5,7 @@ var recipeController = require('../controllers/recipeController');
 var authController = require('../controllers/authController');
 
 if (process.env.NODE_ENV === 'production') {
-	var tempUploadPath = '/root/node/recipes/public/uploads/'
+	var tempUploadPath = '/home/ryanrecipes/node/recipes/public/uploads/'
 } else {
 	var tempUploadPath = './public/uploads/'
 }
