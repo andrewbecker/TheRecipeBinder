@@ -42,10 +42,9 @@ module.exports = {
 		res.render('loginForm');
 	},
 	logout: function(req, res) {
-		var originalUrl = req.header('Referer');
 		req.session.destroy(function(err) {
 			if (err) { throw err; }
 		});
-		res.redirect(originalUrl || '/');
+		res.redirect('/');
 	}
 };
