@@ -6,7 +6,7 @@ var path = require('path');
 var userMain = {first: 'Andy'};
 
 if (process.env.NODE_ENV === 'production') {
-	var finalUploadPath = '/root/node/recipes/public/finalUpload/';
+	var finalUploadPath = '/home/ryanrecipes/node/recipes/public/finalUpload/';
 } else {
 	var finalUploadPath = './public/finalUpload/';
 }

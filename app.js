@@ -93,11 +93,11 @@ db.sequelize.sync({
 	}
 
 	if (process.env.NODE_ENV === 'production') {
-		if (!fs.existsSync('/root/node/recipes/public/finalUpload')) {
-			fs.mkdirSync('/root/node/recipes/public/finalUpload');
+		if (!fs.existsSync('/home/ryanrecipes/node/recipes/public/finalUpload')) {
+			fs.mkdirSync('/home/ryanrecipes/node/recipes/public/finalUpload');
 		}
-		if (!fs.existsSync('/root/node/recipes/public/uploads')) {
-			fs.mkdirSync('/root/node/recipes/public/uploads');
+		if (!fs.existsSync('/home/ryanrecipes/node/recipes/public/uploads')) {
+			fs.mkdirSync('/home/ryanrecipes/node/recipes/public/uploads');
 		}
 	} else {
 		if (!fs.existsSync('./public/finalUpload')) {
