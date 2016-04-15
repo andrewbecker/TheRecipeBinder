@@ -4,6 +4,7 @@ module.exports = function (db) {
 
 	return {
 		requireAuthentication: function (req, res, next) {
+			console.log("*** IN requireAuthentication ***");
 			var token = req.session.auth || '';
 
 			db.token.findOne({
