@@ -90,12 +90,16 @@ module.exports = {
 		});
 	},
 	editRecipe: function(req, res) {
+		var user;
+		if (req.session.user) {
+			user = req.session.user;
+		}
 		var recipeId = parseInt(req.params.id, 10);
 
 		db.recipe.findById(recipeId, {
 		}).then(function(recipe) {
 			var title = 'Update - ' + recipe.title;
-			res.render('updateRecipe', { recipe: recipe, title: title });
+			res.render('updateRecipe', { recipe: recipe, title: title, user: user});
 		});
 	},
 	updateRecipe: function(req, res) {

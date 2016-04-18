@@ -38,7 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 app.use(session({
   secret: 'random_string_goes_here',
-  store:  new redisStore({ host: 'localhost', port: 6379, client: client,ttl :  260}),
+  store:  new redisStore({ host: 'localhost', port: 6379, client: client, ttl :  1800}),
   resave: false,
   saveUninitialized: false
 }));

@@ -1,8 +1,8 @@
-<div class="row page-header">
+{{!-- <div class="row page-header">
 	<div class="col-lg-12">
-		<h1>Update {{recipe.title}}</h1>
+		<h1>Update recipe</h1>
 	</div>
-</div>
+</div> --}}
 <div class="row">
 	<div class="col-xs-12">
 		<form class="form-horizontal" action="/recipe/update/{{recipe.id}}?_method=PUT" method="post" enctype="multipart/form-data">
@@ -41,27 +41,27 @@
 			</div>
 			<div class="form-group">
 				<label for="prep_time" class="col-sm-2 control-label">Prep time</label>
-				<div class="col-sm-2">
+				<div class="col-sm-3">
 					<input type="number" name="prep_time" class="form-control" value="{{recipe.prep_time}}">
 					<span class="help-block">In minutes</span>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="cook_time" class="col-sm-2 control-label">Cook time</label>
-				<div class="col-sm-2">
+				<div class="col-sm-3">
 					<input type="number" class="form-control" name="cook_time" value="{{recipe.cook_time}}">
 					<span class="help-block">In minutes</span>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="image" class="col-sm-2 control-label">Image</label>
-				<div class="col-sm-8">
+				<div class="col-sm-3">
 					<input type="file" name="image" class="form-control" value="/finalUpload/{{recipe.image}}">
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
-					<button class="btn btn-primary" type="submit">Update</button>
+					<button class="btn btn-primary" type="submit">Update recipe</button>
 				</div>
 			</div>
 		</form>
