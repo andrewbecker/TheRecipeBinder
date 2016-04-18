@@ -62,7 +62,10 @@ module.exports = {
 		if (req.session.user) {
 			var user = req.session.user;
 		}
-		res.render('newRecipe', { title: 'New Recipe', user: user});
+		db.category.findAll().then(function(categories) {
+			console.log(categories);
+			res.render('newRecipe', { title: 'New Recipe', user: user, categories: categories});
+		});
 	},
 	doNewRecipe: function(req, res) {
 		if (req.file) {
@@ -78,7 +81,7 @@ module.exports = {
 		for (var key in req.body) {
 			req.body[key] = req.body[key] || undefined;
 		}
-		var body = _.pick(req.body, 'title', 'description', 'ingredients', 'instructions', 'yield', 'prep_time', 'cook_time');
+		var body = _.pick(req.body, 'title', 'description', 'ingredients', 'instructions', 'yield', 'prep_time', 'cook_time', 'categoryId');
 		body.userId = req.session.user.id;
 		body.image = newFileName;
 
@@ -98,13 +101,16 @@ module.exports = {
 
 		db.recipe.findById(recipeId, {
 		}).then(function(recipe) {
-			var title = 'Update - ' + recipe.title;
-			res.render('updateRecipe', { recipe: recipe, title: title, user: user});
+			db.category.findAll().then(function(categories) {
+				console.log(categories);
+				var title = 'Update - ' + recipe.title;
+				res.render('updateRecipe', { recipe: recipe, title: title, user: user, categories: categories});
+			});
 		});
 	},
 	updateRecipe: function(req, res) {
 		var recipeId = parseInt(req.params.id, 10);
-		var body = _.pick(req.body, 'title', 'description', 'ingredients', 'instructions', 'yield', 'prep_time', 'cook_time');
+		var body = _.pick(req.body, 'title', 'description', 'ingredients', 'instructions', 'yield', 'prep_time', 'cook_time', 'categoryId');
 
 		db.recipe.findOne({
 			where: {
@@ -168,6 +174,26 @@ module.exports = {
 			}
 		}).then(function(recipes) {
 			res.render('myRecipes', {recipes: recipes, user: user, title: 'Ryan Family Recipes'})
-		})
+		});
+	},
+	getRecipesByCategory: function(req, res) {
+		var user = req.session.user;
+		var categoryId = req.params.categoryId;
+		db.category.findOne({
+			where: {
+				category: categoryId
+			}
+		}).then(function(category) {
+			db.recipe.findAll({
+				where: {
+					categoryId: category.id
+				}
+			}).then(function(recipes) {
+				db.category.findAll().then(function(categories) {
+					res.render('myRecipes', {recipes: recipes, user: user, title: 'The Recipe Binder', categories: categories});
+				});
+			});
+		});
+		
 	}
 };

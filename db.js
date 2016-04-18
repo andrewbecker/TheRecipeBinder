@@ -35,7 +35,10 @@ db.recipe.hasMany(db.review);
 db.recipe.belongsTo(db.user);
 db.user.hasMany(db.recipe);
 
-db.recipe.belongsToMany (db.category, {as: 'category', through: 'RecipeCategory' });
-db.category.belongsToMany (db.recipe, {as: 'recipe', through: 'RecipeCategory' });
+//db.recipe.belongsToMany (db.category, {as: 'category', through: 'RecipeCategory' });
+//db.category.belongsToMany (db.recipe, {as: 'recipe', through: 'RecipeCategory' });
+
+db.category.hasMany(db.recipe);
+
 
 module.exports = db;

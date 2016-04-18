@@ -28,5 +28,6 @@ router.post('/recipe/new', middleware.requireAuthentication, upload.single('imag
 router.get('/recipe/update/:id', middleware.requireAuthentication, recipeController.editRecipe);
 router.put('/recipe/update/:id', middleware.requireAuthentication, upload.single('image'), recipeController.updateRecipe);
 router.delete('/recipe/delete/:id', middleware.requireAuthentication, recipeController.deleteRecipe);
+router.get('/recipe/category/:categoryId', recipeController.getRecipesByCategory);
 
 module.exports = router;
