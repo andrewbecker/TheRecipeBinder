@@ -24,7 +24,7 @@ module.exports = {
 						[ 'createdAt', 'DESC' ]
 					]
 				}).then(function(allRecipes) {
-					res.render('index', { recipes: recipes, categories: allCategories, allRecipes: allRecipes, user: user, title: 'My e-Recipe Book'});
+					res.render('index', { recipes: recipes, categories: allCategories, allRecipes: allRecipes, user: user, title: 'The Recipe Binder'});
 				})
 
 			});

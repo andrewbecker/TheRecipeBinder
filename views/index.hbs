@@ -4,7 +4,7 @@
 <div class="row">
 	{{#if recipes}}
 		{{#each recipes}}
-		<div class="col-xs-4 recipe-card">
+		<div class="col-xs-12 col-sm-4 recipe-card">
 			{{#if image}}
 				<a href="/recipe/view/{{id}}"><img class="recipe-card-image thumbnail-fit img-responsive" src="/finalUpload/{{image}}" alt="{{title}}"></a>
 			{{/if}}
@@ -15,12 +15,9 @@
 		</div>
 		{{/each}}
 	{{else}}
-		{{#if user}}
-		{{else}}
-			<div class="col-lg-12">
-				<p>No recipes.  <a href="/recipe/new">Enter a new recipe</a></p>
-			</div>
-		{{/if}}
+		<div class="col-lg-12">
+			<p>No recipes.  <a href="/recipe/new">Enter a new recipe</a></p>
+		</div>
 	{{/if}}
 </div>
 {{#if allRecipes}}
@@ -29,7 +26,7 @@
 	</div>
 	<div class="row">
 		{{#each allRecipes}}
-			<div class="col-xs-4 recipe-card">
+			<div class="col-xs-12 col-sm-4 recipe-card">
 				{{#if image}}
 					<a href="/recipe/view/{{id}}"><img class="recipe-card-image thumbnail-fit img-responsive" src="/finalUpload/{{image}}" alt="{{title}}"></a>
 				{{/if}}
