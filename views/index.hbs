@@ -4,13 +4,13 @@
 <div class="row">
 	{{#if recipes}}
 		{{#each recipes}}
-		<div class="col-xs-12 col-sm-4 recipe-card">
+		<div class="col-xs-6 col-sm-3 recipe-card">
 			{{#if image}}
 				<a href="/recipe/view/{{id}}"><img class="recipe-card-image thumbnail-fit img-responsive" src="/finalUpload/{{image}}" alt="{{title}}"></a>
 			{{/if}}
 			<div class="caption">
 				<h3><a href="/recipe/view/{{id}}">{{title}}</a></h3>
-				<p>{{description}}</p>
+				<p>{{{trimString description}}}</p>
 			</div>
 		</div>
 		{{/each}}
@@ -26,13 +26,13 @@
 	</div>
 	<div class="row">
 		{{#each allRecipes}}
-			<div class="col-xs-12 col-sm-4 recipe-card">
+			<div class="col-xs-6 col-sm-3 recipe-card">
 				{{#if image}}
 					<a href="/recipe/view/{{id}}"><img class="recipe-card-image thumbnail-fit img-responsive" src="/finalUpload/{{image}}" alt="{{title}}"></a>
 				{{/if}}
 				<div class="caption">
 					<h3><a href="/recipe/view/{{id}}">{{title}}</a></h3>
-					<p>{{description}}</p>
+					<p>{{{trimString description}}}</p>
 				</div>
 			</div>
 		{{/each}}

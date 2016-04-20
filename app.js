@@ -17,6 +17,7 @@ var redisStore = require('connect-redis')(session);
 var client = redis.createClient();
 var hbs = require('hbs');
 hbs.registerHelper("equal", require("handlebars-helper-equal"));
+hbs.registerHelper("trimString", require('./views/helpers/trimText'))
 
 var routes = require('./routes/index');
 var users = require('./routes/users');

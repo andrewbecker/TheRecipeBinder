@@ -173,7 +173,7 @@ module.exports = {
 				userId: user.id
 			}
 		}).then(function(recipes) {
-			res.render('myRecipes', {recipes: recipes, user: user, title: 'Ryan Family Recipes'})
+			res.render('myRecipes', {recipes: recipes, user: user, title: 'Ryan Family Recipes', pageName: 'My Recipes'})
 		});
 	},
 	getRecipesByCategory: function(req, res) {
@@ -190,7 +190,7 @@ module.exports = {
 				}
 			}).then(function(recipes) {
 				db.category.findAll().then(function(categories) {
-					res.render('myRecipes', {recipes: recipes, user: user, title: 'The Recipe Binder', categories: categories});
+					res.render('myRecipes', {recipes: recipes, user: user, title: 'The Recipe Binder', categories: categories, pageName: category.category});
 				});
 			});
 		});
