@@ -9,7 +9,7 @@ module.exports = {
 		var newRecipes;
 		var allCategories;
 		db.recipe.findAll({
-			limit: 3,
+			limit: 4,
 			order: [
 				[ 'createdAt', 'DESC' ]
 			]
