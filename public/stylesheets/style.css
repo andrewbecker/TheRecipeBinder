@@ -110,8 +110,8 @@ time { display:block; }
 		height: 165px;
 	}
 }
-/*@media only screen and (max-width: 767px) {
-	.thumbnail-fit {
-		height: 100px;
+@media only all and (max-width: 767px) {
+	.list-inline li.prep-logo {
+		display: none;
 	}
-}*/
+}
