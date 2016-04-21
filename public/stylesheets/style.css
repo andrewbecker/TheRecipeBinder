@@ -106,12 +106,16 @@ time { display:block; }
 	}
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-	.thumbnail-fit {
+	img.thumbnail-fit {
 		height: 165px;
 	}
+
 }
 @media only all and (max-width: 767px) {
 	.list-inline li.prep-logo {
 		display: none;
+	}
+	img.thumbnail-fit {
+		height: 130px;
 	}
 }
