@@ -5,8 +5,7 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: false
 		},
 		description: {
-			type: DataTypes.TEXT,
-			defaultValue: ''
+			type: DataTypes.TEXT
 		},
 		ingredients: {
 			type: DataTypes.TEXT
