@@ -21,7 +21,7 @@ module.exports = {
 				allCategories = categories;
 				db.recipe.findAll({
 					order: [
-						[ 'createdAt', 'DESC' ]
+						[ 'createdAt', 'ASC' ]
 					]
 				}).then(function(allRecipes) {
 					res.render('index', { recipes: recipes, categories: allCategories, allRecipes: allRecipes, user: user, title: 'The Recipe Binder'});
