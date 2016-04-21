@@ -50,7 +50,7 @@ module.exports = {
 				recipe.cook_time = generateHoursMinutes(recipe.cook_time);
 
 				if (recipe.ingredients) { recipe.ingredients = recipe.ingredients.split("\r\n"); }
-				if (recipe.instructions) { recipe.instrcutions = recipe.instructions.split("\r\n"); }
+				if (recipe.instructions) { recipe.instructions = recipe.instructions.split("\r\n"); }
 				res.render('viewRecipe', { recipe: recipe, review: recipe.reviews, categories: categoriesMain, title: recipe.title, user: user });
 			}
 
