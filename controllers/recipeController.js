@@ -61,7 +61,11 @@ module.exports = {
 		if (req.session.user) {
 			var user = req.session.user;
 		}
-		db.category.findAll().then(function(categories) {
+		db.category.findAll({
+				order: [
+					['category', 'ASC']
+				]
+			}).then(function(categories) {
 			console.log(categories);
 			res.render('newRecipe', { title: 'New Recipe', user: user, categories: categories});
 		});
@@ -100,7 +104,11 @@ module.exports = {
 
 		db.recipe.findById(recipeId, {
 		}).then(function(recipe) {
-			db.category.findAll().then(function(categories) {
+			db.category.findAll({
+				order: [
+					['category', 'ASC']
+				]
+			}).then(function(categories) {
 				console.log(categories);
 				var title = 'Update - ' + recipe.title;
 				res.render('updateRecipe', { recipe: recipe, title: title, user: user, categories: categories});

@@ -7,6 +7,13 @@
 var app = require('../app');
 var debug = require('debug')('website:server');
 var http = require('http');
+var https = require('https');
+
+var ssl = {
+    key: fs.readFileSync('/etc/letsencrypt/live/therecipebinder.com/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/therecipebinder.com/fullchain.pem'),
+    ca: fs.readFileSync('/etc/letsencrypt/live/therecipebinder.com/chain.pem')
+}
 
 /**
  * Get port from environment and store in Express.
@@ -20,12 +27,14 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+var httpsServer = https.createServer(ssl, app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
 server.listen(port);
+httpServer.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
