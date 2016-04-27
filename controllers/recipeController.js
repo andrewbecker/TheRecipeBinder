@@ -2,7 +2,7 @@ var db = require('../db');
 var _ = require('underscore');
 var fs = require('fs');
 var path = require('path');
-
+var sharp = require('sharp');
 
 if (process.env.NODE_ENV === 'production') {
 	var finalUploadPath = '/home/ryanrecipes/node/recipes/public/finalUpload/';
@@ -27,7 +27,6 @@ var generateHoursMinutes = function(minutes) {
 
 module.exports = {
 	viewRecipe: function(req, res) {
-		console.log('Full URL: ' + req.originalUrl);
 		var user;
 		if (req.session.user) {
 			user = req.session.user;
@@ -66,34 +65,54 @@ module.exports = {
 					['category', 'ASC']
 				]
 			}).then(function(categories) {
-			console.log(categories);
-			res.render('newRecipe', { title: 'New Recipe', user: user, categories: categories});
+				res.render('newRecipe', { title: 'New Recipe', user: user, categories: categories});
 		});
 	},
 	doNewRecipe: function(req, res) {
-		if (req.file) {
-			var tempPath = req.file.path,
-				ext = path.extname(req.file.originalname).toLowerCase(),
-				targetPath = path.resolve(finalUploadPath + req.file.filename + ext);
-			var newFileName = req.file.filename + ext;
-
-
-			fs.renameSync(tempPath, targetPath);
-		}
-
 		for (var key in req.body) {
 			req.body[key] = req.body[key] || undefined;
 		}
 		var body = _.pick(req.body, 'title', 'description', 'ingredients', 'instructions', 'yield', 'prep_time', 'cook_time', 'categoryId');
 		body.userId = req.session.user.id;
-		body.image = newFileName;
+		
+		if (req.file) {
+			var tempPath = req.file.path,
+				ext = path.extname(req.file.originalname).toLowerCase(),
+				//targetPath = path.resolve(finalUploadPath + req.file.filename + ext);
+				targetPath = path.resolve(finalUploadPath);
+			fs.renameSync(tempPath, tempPath + ext);
+			var newFileName = req.file.filename + ext;
+			var imageFile = tempPath + ext;
 
-		db.recipe.create(body).then(function(recipe) {
-			res.redirect('/recipe/view/' + recipe.id);
-		}, function(e) {
-			console.log(e.message);
-			res.render('error', {message: e.toString()});
-		});
+			
+			body.image = newFileName;
+
+			sharp(imageFile)
+				.resize(525, 525)
+				.max()
+				.toFile('./public/finalUpload/' + newFileName, function(err, info) {
+					body.image = newFileName;
+					fs.unlinkSync(path.resolve(tempPath + ext));
+
+					db.recipe.create(body).then(function(recipe) {
+						res.redirect('/recipe/view/' + recipe.id);
+					}, function(e) {
+						console.log(e.message);
+						res.render('error', {message: e.toString()});
+					});
+				});
+
+
+			//fs.renameSync(tempPath, targetPath);
+		} else {
+
+			db.recipe.create(body).then(function(recipe) {
+				res.redirect('/recipe/view/' + recipe.id);
+			}, function(e) {
+				console.log(e.message);
+				res.render('error', {message: e.toString()});
+			});
+		}
 	},
 	editRecipe: function(req, res) {
 		var user;
@@ -109,7 +128,6 @@ module.exports = {
 					['category', 'ASC']
 				]
 			}).then(function(categories) {
-				console.log(categories);
 				var title = 'Update - ' + recipe.title;
 				res.render('updateRecipe', { recipe: recipe, title: title, user: user, categories: categories});
 			});
@@ -129,24 +147,53 @@ module.exports = {
 					var oldFileName = recipe.image;
 					var tempPath = req.file.path,
 						ext = path.extname(req.file.originalname).toLowerCase(),
-						targetPath = path.resolve(finalUploadPath + req.file.filename + ext);
+						// targetPath = path.resolve(finalUploadPath + req.file.filename + ext);
+						targetPath = path.resolve(finalUploadPath);
 					var newFileName = req.file.filename + ext;
 
 					body.image = newFileName;
 
+					fs.renameSync(tempPath, tempPath + ext);
+					var imageFile = tempPath + ext;
 
-					fs.renameSync(tempPath, targetPath);
+					sharp(imageFile)
+						.resize(525, 525)
+						.max()
+						.toFile('./public/finalUpload/' + newFileName, function(err, info) {
+							console.log("error " + err);
+							console.log("info " + info);
+							fs.unlinkSync(path.resolve(tempPath + ext));
 
-					if (oldFileName) {
-						fs.unlinkSync(path.resolve(finalUploadPath + oldFileName));
-					}
+							if (oldFileName) {
+								fs.unlinkSync(path.resolve(finalUploadPath + oldFileName));
+							}
+
+							recipe.update(body).then(function(recipe) {
+								res.redirect('/recipe/view/' + recipe.id);
+							}, function(e) {
+								res.render('error', {message: e.toString()});
+							});
+
+
+						});
+
+					// console.log("tempPath: " + tempPath);
+					// console.log("newFileName: " + newFileName);
+
+
+					// fs.renameSync(tempPath, targetPath);
+
+					// if (oldFileName) {
+					// 	fs.unlinkSync(path.resolve(finalUploadPath + oldFileName));
+					// }
+				} else {
+
+					recipe.update(body).then(function(recipe) {
+						res.redirect('/recipe/view/' + recipe.id);
+					}, function(e) {
+						res.render('error', {message: e.toString()});
+					});
 				}
-
-				recipe.update(body).then(function(recipe) {
-					res.redirect('/recipe/view/' + recipe.id);
-				}, function(e) {
-					res.render('error', {message: e.toString()});
-				});
 			}
 		});
 	},
@@ -166,7 +213,6 @@ module.exports = {
 					id: recipeId
 				}
 			}).then(function(rowsDeleted) {
-				console.log(rowsDeleted);
 				res.redirect('/');
 			}, function() {
 				res.render('error', { message: 'There was an error deleting recipe' });
