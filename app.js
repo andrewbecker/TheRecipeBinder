@@ -88,7 +88,6 @@ app.use(function(err, req, res, next) {
 var doSync = false;
 
 db.sequelize.sync({
-	logging: console.log,
 	force: doSync
 }).then(function() {
 	console.log('Sequelize synced!');
