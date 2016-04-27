@@ -88,7 +88,7 @@ module.exports = {
 			body.image = newFileName;
 
 			sharp(imageFile)
-				.resize(525, 525)
+				.resize(450, 450)
 				.max()
 				.toFile('./public/finalUpload/' + newFileName, function(err, info) {
 					body.image = newFileName;
@@ -157,7 +157,7 @@ module.exports = {
 					var imageFile = tempPath + ext;
 
 					sharp(imageFile)
-						.resize(525, 525)
+						.resize(450, 450)
 						.max()
 						.toFile('./public/finalUpload/' + newFileName, function(err, info) {
 							console.log("error " + err);
