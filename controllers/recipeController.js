@@ -2,7 +2,7 @@ var db = require('../db');
 var _ = require('underscore');
 var fs = require('fs');
 var path = require('path');
-
+var editor = path.resolve(__dirname, '../editor.js');
 
 if (process.env.NODE_ENV === 'production') {
 	var finalUploadPath = '/home/ryanrecipes/node/recipes/public/finalUpload/';
@@ -10,7 +10,24 @@ if (process.env.NODE_ENV === 'production') {
 	var finalUploadPath = './public/finalUpload/';
 }
 
-var categoriesMain = ['Breakfast', 'Lunch', 'Dinner'];
+function compressAndResize (imageUrl) {
+	var childProcess = require('child_process').fork(editor);
+
+	childProcess.on('message', function(message) {
+		console.log(message);
+	});
+
+	childProcess.on('error', function(error) {
+		console.error(error.stack);
+	});
+
+	childProcess.on('exit', function() {
+		console.log('process exited');
+	});
+
+	childProcess.send(imageUrl);
+}
+
 
 // var sendJsonResponse = function(res, status, content) {
 // 	res.status(status);
@@ -27,7 +44,6 @@ var generateHoursMinutes = function(minutes) {
 
 module.exports = {
 	viewRecipe: function(req, res) {
-		console.log('Full URL: ' + req.originalUrl);
 		var user;
 		if (req.session.user) {
 			user = req.session.user;
@@ -51,7 +67,7 @@ module.exports = {
 
 				if (recipe.ingredients) { recipe.ingredients = recipe.ingredients.split("\r\n"); }
 				if (recipe.instructions) { recipe.instructions = recipe.instructions.split("\r\n"); }
-				res.render('viewRecipe', { recipe: recipe, review: recipe.reviews, categories: categoriesMain, title: recipe.title, user: user });
+				res.render('viewRecipe', { recipe: recipe, review: recipe.reviews, title: recipe.title, user: user });
 			}
 
 		});
@@ -66,12 +82,12 @@ module.exports = {
 					['category', 'ASC']
 				]
 			}).then(function(categories) {
-			console.log(categories);
-			res.render('newRecipe', { title: 'New Recipe', user: user, categories: categories});
+				res.render('newRecipe', { title: 'New Recipe', user: user, categories: categories});
 		});
 	},
 	doNewRecipe: function(req, res) {
 		if (req.file) {
+			console.log('********* IMAGE URL ********* ' + req.file.encoding);
 			var tempPath = req.file.path,
 				ext = path.extname(req.file.originalname).toLowerCase(),
 				targetPath = path.resolve(finalUploadPath + req.file.filename + ext);
@@ -79,6 +95,7 @@ module.exports = {
 
 
 			fs.renameSync(tempPath, targetPath);
+			compressAndResize(targetPath);
 		}
 
 		for (var key in req.body) {
@@ -109,7 +126,6 @@ module.exports = {
 					['category', 'ASC']
 				]
 			}).then(function(categories) {
-				console.log(categories);
 				var title = 'Update - ' + recipe.title;
 				res.render('updateRecipe', { recipe: recipe, title: title, user: user, categories: categories});
 			});
@@ -166,7 +182,6 @@ module.exports = {
 					id: recipeId
 				}
 			}).then(function(rowsDeleted) {
-				console.log(rowsDeleted);
 				res.redirect('/');
 			}, function() {
 				res.render('error', { message: 'There was an error deleting recipe' });
