@@ -2,7 +2,7 @@ var db = require('../db');
 var _ = require('underscore');
 var fs = require('fs');
 var path = require('path');
-var editor = path.resolve(__dirname, '../editor.js');
+var sharp = require('sharp');
 
 if (process.env.NODE_ENV === 'production') {
 	var finalUploadPath = '/home/ryanrecipes/node/recipes/public/finalUpload/';
@@ -10,24 +10,7 @@ if (process.env.NODE_ENV === 'production') {
 	var finalUploadPath = './public/finalUpload/';
 }
 
-function compressAndResize (imageUrl) {
-	var childProcess = require('child_process').fork(editor);
-
-	childProcess.on('message', function(message) {
-		console.log(message);
-	});
-
-	childProcess.on('error', function(error) {
-		console.error(error.stack);
-	});
-
-	childProcess.on('exit', function() {
-		console.log('process exited');
-	});
-
-	childProcess.send(imageUrl);
-}
-
+var categoriesMain = ['Breakfast', 'Lunch', 'Dinner'];
 
 // var sendJsonResponse = function(res, status, content) {
 // 	res.status(status);
@@ -67,7 +50,7 @@ module.exports = {
 
 				if (recipe.ingredients) { recipe.ingredients = recipe.ingredients.split("\r\n"); }
 				if (recipe.instructions) { recipe.instructions = recipe.instructions.split("\r\n"); }
-				res.render('viewRecipe', { recipe: recipe, review: recipe.reviews, title: recipe.title, user: user });
+				res.render('viewRecipe', { recipe: recipe, review: recipe.reviews, categories: categoriesMain, title: recipe.title, user: user });
 			}
 
 		});
@@ -86,31 +69,50 @@ module.exports = {
 		});
 	},
 	doNewRecipe: function(req, res) {
-		if (req.file) {
-			console.log('********* IMAGE URL ********* ' + req.file.encoding);
-			var tempPath = req.file.path,
-				ext = path.extname(req.file.originalname).toLowerCase(),
-				targetPath = path.resolve(finalUploadPath + req.file.filename + ext);
-			var newFileName = req.file.filename + ext;
-
-
-			fs.renameSync(tempPath, targetPath);
-			compressAndResize(targetPath);
-		}
-
 		for (var key in req.body) {
 			req.body[key] = req.body[key] || undefined;
 		}
 		var body = _.pick(req.body, 'title', 'description', 'ingredients', 'instructions', 'yield', 'prep_time', 'cook_time', 'categoryId');
 		body.userId = req.session.user.id;
-		body.image = newFileName;
+		
+		if (req.file) {
+			var tempPath = req.file.path,
+				ext = path.extname(req.file.originalname).toLowerCase(),
+				//targetPath = path.resolve(finalUploadPath + req.file.filename + ext);
+				targetPath = path.resolve(finalUploadPath);
+			fs.renameSync(tempPath, tempPath + ext);
+			var newFileName = req.file.filename + ext;
+			var imageFile = tempPath + ext;
 
-		db.recipe.create(body).then(function(recipe) {
-			res.redirect('/recipe/view/' + recipe.id);
-		}, function(e) {
-			console.log(e.message);
-			res.render('error', {message: e.toString()});
-		});
+			
+			body.image = newFileName;
+
+			sharp(imageFile)
+				.resize(450, 450)
+				.max()
+				.toFile('/home/andy/node/recipes/public/finalUpload/' + newFileName, function(err, info) {
+					body.image = newFileName;
+					fs.unlinkSync(path.resolve(tempPath + ext));
+
+					db.recipe.create(body).then(function(recipe) {
+						res.redirect('/recipe/view/' + recipe.id);
+					}, function(e) {
+						console.log(e.message);
+						res.render('error', {message: e.toString()});
+					});
+				});
+
+
+			//fs.renameSync(tempPath, targetPath);
+		} else {
+
+			db.recipe.create(body).then(function(recipe) {
+				res.redirect('/recipe/view/' + recipe.id);
+			}, function(e) {
+				console.log(e.message);
+				res.render('error', {message: e.toString()});
+			});
+		}
 	},
 	editRecipe: function(req, res) {
 		var user;
@@ -145,25 +147,53 @@ module.exports = {
 					var oldFileName = recipe.image;
 					var tempPath = req.file.path,
 						ext = path.extname(req.file.originalname).toLowerCase(),
-						targetPath = path.resolve(finalUploadPath + req.file.filename + ext);
+						// targetPath = path.resolve(finalUploadPath + req.file.filename + ext);
+						targetPath = path.resolve(finalUploadPath);
 					var newFileName = req.file.filename + ext;
 
 					body.image = newFileName;
 
+					fs.renameSync(tempPath, tempPath + ext);
+					var imageFile = tempPath + ext;
 
-					fs.renameSync(tempPath, targetPath);
-					compressAndResize(targetPath);
+					sharp(imageFile)
+						.resize(450, 450)
+						.max()
+						.toFile('./public/finalUpload/' + newFileName, function(err, info) {
+							console.log("error " + err);
+							console.log("info " + info);
+							fs.unlinkSync(path.resolve(tempPath + ext));
 
-					if (oldFileName) {
-						fs.unlinkSync(path.resolve(finalUploadPath + oldFileName));
-					}
+							if (oldFileName) {
+								fs.unlinkSync(path.resolve(finalUploadPath + oldFileName));
+							}
+
+							recipe.update(body).then(function(recipe) {
+								res.redirect('/recipe/view/' + recipe.id);
+							}, function(e) {
+								res.render('error', {message: e.toString()});
+							});
+
+
+						});
+
+					// console.log("tempPath: " + tempPath);
+					// console.log("newFileName: " + newFileName);
+
+
+					// fs.renameSync(tempPath, targetPath);
+
+					// if (oldFileName) {
+					// 	fs.unlinkSync(path.resolve(finalUploadPath + oldFileName));
+					// }
+				} else {
+
+					recipe.update(body).then(function(recipe) {
+						res.redirect('/recipe/view/' + recipe.id);
+					}, function(e) {
+						res.render('error', {message: e.toString()});
+					});
 				}
-
-				recipe.update(body).then(function(recipe) {
-					res.redirect('/recipe/view/' + recipe.id);
-				}, function(e) {
-					res.render('error', {message: e.toString()});
-				});
 			}
 		});
 	},
