@@ -90,7 +90,7 @@ module.exports = {
 			sharp(imageFile)
 				.resize(450, 450)
 				.max()
-				.toFile('./public/finalUpload/' + newFileName, function(err, info) {
+				.toFile('.node/recipe/public/finalUpload/' + newFileName, function(err, info) {
 					body.image = newFileName;
 					fs.unlinkSync(path.resolve(tempPath + ext));
 
