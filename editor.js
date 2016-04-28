@@ -13,7 +13,7 @@ function processImg (filesrc) {
     height: 450,
     crop: false
   }))
-  .pipe(gulp.dest('public/finalUpload'))
+  .pipe(gulp.dest('./public/finalUpload'))
   // save 120 x 120
   // .pipe(imagemin({optimizationLevel: 7}))
   // .pipe(imageResize({
