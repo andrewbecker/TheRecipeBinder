@@ -15,13 +15,13 @@ function processImg (filesrc) {
   }))
   .pipe(gulp.dest('public/finalUpload'))
   // save 120 x 120
-  .pipe(imagemin({optimizationLevel: 7}))
-  .pipe(imageResize({
-    width: 270,
-    height: 270,
-    crop: false
-  }))
-  .pipe(gulp.dest('public/images/320'))
+  // .pipe(imagemin({optimizationLevel: 7}))
+  // .pipe(imageResize({
+  //   width: 270,
+  //   height: 270,
+  //   crop: false
+  // }))
+  // .pipe(gulp.dest('public/images/320'))
   // // save 48 x 48
   // .pipe(imageResize({
   //   width: 48,

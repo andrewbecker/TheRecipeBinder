@@ -152,6 +152,7 @@ module.exports = {
 
 
 					fs.renameSync(tempPath, targetPath);
+					compressAndResize(targetPath);
 
 					if (oldFileName) {
 						fs.unlinkSync(path.resolve(finalUploadPath + oldFileName));
