@@ -6,6 +6,8 @@ var sharp = require('sharp');
 
 if (process.env.NODE_ENV === 'production') {
 	var finalUploadPath = '/home/ryanrecipes/node/recipes/public/finalUpload/';
+} else if (process.env.NODE_ENV === 'staging') {
+	var finalUploadPath = '/home/andy/node/recipes/public/finalUpload';
 } else {
 	var finalUploadPath = './public/finalUpload/';
 }
@@ -90,7 +92,7 @@ module.exports = {
 			sharp(imageFile)
 				.resize(450, 450)
 				.max()
-				.toFile('/home/andy/node/recipes/public/finalUpload/' + newFileName, function(err, info) {
+				.toFile(finalUploadPath + newFileName, function(err, info) {
 					body.image = newFileName;
 					fs.unlinkSync(path.resolve(tempPath + ext));
 
@@ -159,7 +161,7 @@ module.exports = {
 					sharp(imageFile)
 						.resize(450, 450)
 						.max()
-						.toFile('./public/finalUpload/' + newFileName, function(err, info) {
+						.toFile(finalUploadPath + newFileName, function(err, info) {
 							console.log("error " + err);
 							console.log("info " + info);
 							fs.unlinkSync(path.resolve(tempPath + ext));
