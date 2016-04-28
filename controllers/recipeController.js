@@ -7,7 +7,7 @@ var sharp = require('sharp');
 if (process.env.NODE_ENV === 'production') {
 	var finalUploadPath = '/home/ryanrecipes/node/recipes/public/finalUpload/';
 } else if (process.env.NODE_ENV === 'staging') {
-	var finalUploadPath = '/home/andy/node/recipes/public/finalUpload';
+	var finalUploadPath = '/home/andy/node/recipes/public/finalUpload/';
 } else {
 	var finalUploadPath = './public/finalUpload/';
 }
