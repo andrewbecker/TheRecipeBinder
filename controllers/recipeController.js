@@ -37,7 +37,8 @@ module.exports = {
 
 		db.recipe.findById(recipeId, {
 			include: [{
-				model: db.review
+				model: db.review,
+				model: db.user
 			}]
 		}).then(function(recipe) {
 			if (!recipe) {

@@ -14,6 +14,7 @@
 <div class="row page-header">
 	<div class="col-lg-8">
 		<h1>{{recipe.title}}</h1>
+		<p>Recipe by: {{recipe.user.first_name}}  {{recipe.user.last_name}}</p>
 	</div>
 
 	<div class="col-lg-12">
@@ -23,7 +24,13 @@
 <div class="row">
 	<!-- Left column for ingredients -->
 	<div class="col-lg-12">
-		<div class="col-sm-6 col-xs-6">
+		<div class="col-xs-12 {{!-- col-xs-offset-1 --}} col-sm-6 col-sm-offset-1 pull-right">
+			<!-- right column for picture -->
+			{{#if recipe.image}}
+				<img src="/finalUpload/{{recipe.image}}" alt="{{recipe.title}}" class="img-responsive recipe-img" >
+			{{/if}}
+		</div>
+		<div class="col-sm-5 col-xs-6">
 			<h2>Ingredients</h2>
 			<ul class="list-unstyled ingredients">
 				{{#each recipe.ingredients}}
@@ -31,30 +38,27 @@
 				{{/each}}
 			</ul>
 		</div>
-		<div class="col-xs-5 col-xs-offset-1 col-sm-5 col-sm-offset-1">
-			<!-- right column for picture -->
-			{{#if recipe.image}}
-				<img src="/finalUpload/{{recipe.image}}" alt="{{recipe.title}}" class="img-responsive recipe-img">
-			{{/if}}
-		</div>
+		
 	</div>
 </div>
 <!-- Left column for instructions -->
 <div class="row">
-	<div class="col-sm-6">
-		<h2>Instructions</h2>
-		<ul class="list-unstyled list-inline prepTimes">
-			<li class="prep-logo text-center"><span class="glyphicon glyphicon-time" style="font-size: 3em;"></span></li>
-			<li class="prep-time text-center"><p>Prep</p><span>{{recipe.prep_time.hours}}h {{recipe.prep_time.min}}m</span></li>
-			<li class="prep-time text-center"><p>Cook</p><span>{{recipe.cook_time.hours}}h {{recipe.cook_time.min}}m</span></li>
-			<li class="prep-time text-center"><p>Total</p><span>{{recipe.total_time.hours}}h {{recipe.total_time.min}}m</span></li>
-			<li class="prep-time text-center"><p>Servings</p><span>{{recipe.yield}}</span></li>
-		</ul>
-		<ol>
-			{{#each recipe.instructions}}
-				<li class="instruction">{{this}}</li>
-			{{/each}}
-		</ol>
+	<div class="col-lg-12">
+		<div class="col-sm-6">
+			<h2>Instructions</h2>
+			<ul class="list-unstyled list-inline prepTimes">
+				<li class="prep-logo text-center"><span class="glyphicon glyphicon-time" style="font-size: 3em;"></span></li>
+				<li class="prep-time text-center"><p>Prep</p><span>{{recipe.prep_time.hours}}h {{recipe.prep_time.min}}m</span></li>
+				<li class="prep-time text-center"><p>Cook</p><span>{{recipe.cook_time.hours}}h {{recipe.cook_time.min}}m</span></li>
+				<li class="prep-time text-center"><p>Total</p><span>{{recipe.total_time.hours}}h {{recipe.total_time.min}}m</span></li>
+				<li class="prep-time text-center"><p>Servings</p><span>{{recipe.yield}}</span></li>
+			</ul>
+			<ol>
+				{{#each recipe.instructions}}
+					<li class="instruction">{{this}}</li>
+				{{/each}}
+			</ol>
+		</div>
 	</div>
 </div>
 {{#if review}}

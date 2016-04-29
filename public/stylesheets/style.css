@@ -18,18 +18,37 @@ nav.navbar {
 	padding-top: 20px;
 }
 
+h1 {
+	font-size: 26px;
+}
+
 h2 {
 	margin-bottom: 20px;
+	font-size: 20px;
+}
+
+.caption h3 {
+	font-size: 17px;
+}
+.caption h3 a {
+	color: #4d4d4d;
+}
+.caption p {
+	color: #777;
+}
+
+.page-header {
+	margin-top: 10px;
 }
 
 .ingredient {
 	margin: 15px 15px;
-	font-size: 16px;
+	font-size: 14px;
 }
 
 .instruction {
 	line-height: 1.5em;
-	font-size: 16px;
+	font-size: 14px;
 	margin-bottom: 15px;
 }
 
@@ -47,6 +66,9 @@ span.glyphicon {
 
 .rating span.glyphicon { margin-right: 0px; }
 
+.recipe-img {
+	margin: 20px auto 0px auto;
+}
 
 .servings { margin-top:20px; display: block; }
 .cook_times { margin-bottom: 20px; }
