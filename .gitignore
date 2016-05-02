@@ -40,3 +40,5 @@ public/finalUpload
 public/images
 sandbox
 *.rdb
+
+public/javascripts/testScripts

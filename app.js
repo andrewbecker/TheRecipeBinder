@@ -19,6 +19,7 @@ var hbs = require('hbs');
 var helpers = require('./views/helpers/handlebarsHelpers');
 hbs.registerHelper("equal", require("handlebars-helper-equal"));
 hbs.registerHelper("trimString", helpers.trimString);
+hbs.registerPartials(__dirname + '/views/partials');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
