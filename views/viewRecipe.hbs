@@ -5,7 +5,7 @@
 			<a class="btn btn-primary btn-lg" href="/recipe/update/{{recipe.id}}">Edit</a>
 		</div>
 		<div class="col-xs-2 col-md-1">
-			<form action="/recipe/delete/{{recipe.id}}?_method=DELETE" method="post">
+			<form action="/recipe/delete/{{recipe.id}}?_method=DELETE&_csrf={{csrfToken}}" method="post">
 				<button class="btn btn-danger btn-lg" type="submit">Delete</button>
 			</form>
 		</div>

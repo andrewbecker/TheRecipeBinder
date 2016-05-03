@@ -27,6 +27,33 @@ var generateHoursMinutes = function(minutes) {
 	return time;
 }
 
+/******* Testing for image resizing *********/
+// require image processing gulpfile
+var editor = path.resolve(__dirname, '../editor.js');
+
+function compressAndResize (imageUrl) {
+	var childProcess = require('child_process').fork(editor);
+
+	childProcess.on('message', function(message) {
+		console.log(message);
+	});
+
+	childProcess.on('error', function(error) {
+	    console.error(error.stack)
+	});
+	childProcess.on('exit', function() {
+		console.log('process exited');
+	});
+	childProcess.send(imageUrl);
+}
+
+
+
+
+
+/****** End Image resizing ******/
+
+
 module.exports = {
 	viewRecipe: function(req, res) {
 		var user;
@@ -93,9 +120,12 @@ module.exports = {
 			sharp(imageFile)
 				.resize(450, 450)
 				.max()
-				.toFile(finalUploadPath + newFileName, function(err, info) {
-					body.image = newFileName;
+				.toFile(finalUploadPath + req.file.filename + '.jpg', function(err, info) {
+					body.image = req.file.filename + '.jpg';
 					fs.unlinkSync(path.resolve(tempPath + ext));
+
+					console.log(path.resolve(__dirname, '../public/finalUpload/' + body.image));
+					compressAndResize(path.resolve(__dirname, '../public/finalUpload/' + body.image));
 
 					db.recipe.create(body).then(function(recipe) {
 						res.redirect('/recipe/view/' + recipe.id);
@@ -104,7 +134,7 @@ module.exports = {
 						res.render('error', {message: e.toString(), csrfToken: req.csrfToken()});
 					});
 				});
-
+				
 
 			//fs.renameSync(tempPath, targetPath);
 		} else {

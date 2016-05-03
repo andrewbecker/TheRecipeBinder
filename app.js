@@ -17,6 +17,7 @@ var redis = require('redis');
 var redisStore = require('connect-redis')(session);
 var client = redis.createClient();
 var hbs = require('hbs');
+var helmet = require('helmet');
 var helpers = require('./views/helpers/handlebarsHelpers');
 hbs.registerHelper("equal", require("handlebars-helper-equal"));
 hbs.registerHelper("trimString", helpers.trimString);
@@ -28,6 +29,9 @@ var users = require('./routes/users');
 var admin = require('./routes/admin');
 
 var app = express();
+
+app.use(helmet());
+app.use(helmet.dnsPrefetchControl({ allow: true }));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

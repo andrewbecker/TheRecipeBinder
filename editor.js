@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var imagemin = require('gulp-imagemin');
 var imageResize = require('gulp-image-resize');
+var path = require('path');
 function processImg (filesrc) {
  return gulp.src(filesrc)
   // compress and save
@@ -9,11 +10,12 @@ function processImg (filesrc) {
   // save 450 x 450
   .pipe(imagemin({optimizationLevel: 7}))
   .pipe(imageResize({
-    width: 450,
-    height: 450,
-    crop: false
+    width: 270,
+    height: 270,
+    crop: false,
+    format: 'jpg'
   }))
-  .pipe(gulp.dest('./node/recipes/public/finalUpload'))
+  .pipe(gulp.dest(path.resolve(__dirname, 'public/finalUpload/thumbs')));
   // save 120 x 120
   // .pipe(imagemin({optimizationLevel: 7}))
   // .pipe(imageResize({
