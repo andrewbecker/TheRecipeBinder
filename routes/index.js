@@ -16,6 +16,7 @@ var upload = multer({ dest: tempUploadPath });
 var db = require('../db');
 var middleware = require('../middleware')(db);
 
+router.all('*', csrfProtection);
 
 /* GET home page. */
 router.get('/', homeController.index);
@@ -25,10 +26,10 @@ router.get('/recipe/view/:id', recipeController.viewRecipe);
 //router.all(middleware.requireAuthentication);
 
 router.get('/myrecipes', middleware.requireAuthentication, recipeController.myRecipes);
-router.get('/recipe/new', middleware.requireAuthentication, csrfProtection, recipeController.newRecipe);
-router.post('/recipe/new', middleware.requireAuthentication, csrfProtection, upload.single('image'), recipeController.doNewRecipe);
-router.get('/recipe/update/:id', middleware.requireAuthentication, csrfProtection, recipeController.editRecipe);
-router.put('/recipe/update/:id', middleware.requireAuthentication, csrfProtection, upload.single('image'), recipeController.updateRecipe);
+router.get('/recipe/new', middleware.requireAuthentication, recipeController.newRecipe);
+router.post('/recipe/new', middleware.requireAuthentication, upload.single('image'), recipeController.doNewRecipe);
+router.get('/recipe/update/:id', middleware.requireAuthentication, recipeController.editRecipe);
+router.put('/recipe/update/:id', middleware.requireAuthentication, upload.single('image'), recipeController.updateRecipe);
 router.delete('/recipe/delete/:id', middleware.requireAuthentication, recipeController.deleteRecipe);
 router.get('/recipe/category/:categoryId', recipeController.getRecipesByCategory);
 

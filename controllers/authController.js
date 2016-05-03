@@ -4,7 +4,7 @@ var db = require('../db'),
 
 module.exports = {
 	signup: function(req, res) {
-		res.render('signup');
+		res.render('signup', {csrfToken: req.csrfToken()});
 	},
 	createAccount: function(req, res) {
 		var body = _.pick(req.body, 'username', 'password', 'first_name', 'last_name');
@@ -39,7 +39,7 @@ module.exports = {
 		});
 	},
 	loginForm: function(req, res) {
-		res.render('loginForm');
+		res.render('loginForm', { csrfToken: req.csrfToken() });
 	},
 	logout: function(req, res) {
 		req.session.destroy(function(err) {

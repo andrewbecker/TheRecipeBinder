@@ -44,7 +44,7 @@ module.exports = {
 			if (!recipe) {
 				res.status(404);
 				res.render('error', {
-					message: 'recipe not found'
+					message: 'recipe not found', csrfToken: req.csrfToken()
 				});
 			} else {
 				recipe.total_time = generateHoursMinutes(recipe.prep_time + recipe.cook_time);
@@ -53,7 +53,7 @@ module.exports = {
 
 				if (recipe.ingredients) { recipe.ingredients = recipe.ingredients.split("\r\n"); }
 				if (recipe.instructions) { recipe.instructions = recipe.instructions.split("\r\n"); }
-				res.render('viewRecipe', { recipe: recipe, review: recipe.reviews, categories: categoriesMain, title: recipe.title, user: user });
+				res.render('viewRecipe', { recipe: recipe, review: recipe.reviews, categories: categoriesMain, title: recipe.title, user: user, csrfToken: req.csrfToken() });
 			}
 
 		});
@@ -101,7 +101,7 @@ module.exports = {
 						res.redirect('/recipe/view/' + recipe.id);
 					}, function(e) {
 						console.log(e.message);
-						res.render('error', {message: e.toString()});
+						res.render('error', {message: e.toString(), csrfToken: req.csrfToken()});
 					});
 				});
 
@@ -113,7 +113,7 @@ module.exports = {
 				res.redirect('/recipe/view/' + recipe.id);
 			}, function(e) {
 				console.log(e.message);
-				res.render('error', {message: e.toString()});
+				res.render('error', {message: e.toString(), csrfToken: req.csrfToken()});
 			});
 		}
 	},
@@ -174,7 +174,7 @@ module.exports = {
 							recipe.update(body).then(function(recipe) {
 								res.redirect('/recipe/view/' + recipe.id);
 							}, function(e) {
-								res.render('error', {message: e.toString()});
+								res.render('error', {message: e.toString(), csrfToken: req.csrfToken()});
 							});
 
 
@@ -194,7 +194,7 @@ module.exports = {
 					recipe.update(body).then(function(recipe) {
 						res.redirect('/recipe/view/' + recipe.id);
 					}, function(e) {
-						res.render('error', {message: e.toString()});
+						res.render('error', {message: e.toString(), csrfToken: req.csrfToken()});
 					});
 				}
 			}
@@ -218,7 +218,7 @@ module.exports = {
 			}).then(function(rowsDeleted) {
 				res.redirect('/');
 			}, function() {
-				res.render('error', { message: 'There was an error deleting recipe' });
+				res.render('error', { message: 'There was an error deleting recipe', csrfToken: req.csrfToken() });
 			});
 		});
 	},
@@ -229,7 +229,7 @@ module.exports = {
 				userId: user.id
 			}
 		}).then(function(recipes) {
-			res.render('myRecipes', {recipes: recipes, user: user, title: 'Ryan Family Recipes', pageName: 'My Recipes'})
+			res.render('myRecipes', {recipes: recipes, user: user, title: 'Ryan Family Recipes', pageName: 'My Recipes', csrfToken: req.csrfToken()})
 		});
 	},
 	getRecipesByCategory: function(req, res) {
@@ -246,7 +246,7 @@ module.exports = {
 				}
 			}).then(function(recipes) {
 				db.category.findAll().then(function(categories) {
-					res.render('myRecipes', {recipes: recipes, user: user, title: 'The Recipe Binder', categories: categories, pageName: category.category});
+					res.render('myRecipes', {recipes: recipes, user: user, title: 'The Recipe Binder', categories: categories, pageName: category.category, csrfToken: req.csrfToken()});
 				});
 			});
 		});

@@ -22,7 +22,7 @@ module.exports = function (db) {
 				req.user = user.toPublicJSON();
 				next();
 			}).catch(function () {
-				res.render('error', {message: 'User must be logged in'});
+				res.render('error', {message: 'User must be logged in', csrfToken: req.csrfToken()});
 			});
 		}
 	};

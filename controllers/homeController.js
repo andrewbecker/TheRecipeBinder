@@ -24,12 +24,12 @@ module.exports = {
 						[ 'createdAt', 'ASC' ]
 					]
 				}).then(function(allRecipes) {
-					res.render('index', { recipes: recipes, categories: allCategories, allRecipes: allRecipes, user: user, title: 'The Recipe Binder'});
+					res.render('index', { recipes: recipes, categories: allCategories, allRecipes: allRecipes, user: user, title: 'The Recipe Binder', csrfToken: req.csrfToken()});
 				})
 
 			});
 		}, function(e){
-			res.render('error', {message: e.toString()});
+			res.render('error', {message: e.toString(), csrfToken: req.csrfToken()});
 		});
 
 	}

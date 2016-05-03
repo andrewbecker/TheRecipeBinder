@@ -13,7 +13,7 @@ module.exports = {
 					['category', 'ASC']
 				]
 			}).then(function(category) {
-			res.render('admin/categories', { category: category, user: user })
+			res.render('admin/categories', { category: category, user: user, csrfToken: req.csrfToken() })
 		});
 	},
 	newCategory: function(req, res) {
