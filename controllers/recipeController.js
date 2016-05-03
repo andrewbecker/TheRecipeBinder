@@ -242,6 +242,7 @@ module.exports = {
 		}).then(function (recipe) {
 			if (recipe.image) {
 				fs.unlinkSync(path.resolve(finalUploadPath + recipe.image));
+				fs.unlinkSync(path.resolve(finalUploadPath + 'thumbs/' + recipe.image));
 			}
 
 			db.recipe.destroy({
