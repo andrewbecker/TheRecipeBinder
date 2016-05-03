@@ -21,6 +21,7 @@ hbs.registerHelper("equal", require("handlebars-helper-equal"));
 hbs.registerHelper("trimString", helpers.trimString);
 hbs.registerPartials(__dirname + '/views/partials');
 
+
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var admin = require('./routes/admin');

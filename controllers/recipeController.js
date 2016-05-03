@@ -68,7 +68,7 @@ module.exports = {
 					['category', 'ASC']
 				]
 			}).then(function(categories) {
-				res.render('newRecipe', { title: 'New Recipe', user: user, categories: categories});
+				res.render('newRecipe', { title: 'New Recipe', user: user, categories: categories, csrfToken: req.csrfToken()});
 		});
 	},
 	doNewRecipe: function(req, res) {
@@ -132,7 +132,7 @@ module.exports = {
 				]
 			}).then(function(categories) {
 				var title = 'Update - ' + recipe.title;
-				res.render('updateRecipe', { recipe: recipe, title: title, user: user, categories: categories});
+				res.render('updateRecipe', { recipe: recipe, title: title, user: user, categories: categories, csrfToken: req.csrfToken()});
 			});
 		});
 	},

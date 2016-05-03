@@ -3,6 +3,8 @@ var router = express.Router();
 var adminController = require('../controllers/adminController');
 var db = require('../db');
 var middleware = require('../middleware')(db);
+var csrf = require('csurf');
+var csrfProtection = csrf();
 
 router.all('*', middleware.requireAuthentication);
 
