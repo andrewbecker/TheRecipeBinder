@@ -195,13 +195,17 @@ module.exports = {
 					sharp(imageFile)
 						.resize(450, 450)
 						.max()
-						.toFile(finalUploadPath + newFileName, function(err, info) {
+						.toFile(finalUploadPath + req.file.filename + '.jpg', function(err, info) {
 							console.log("error " + err);
 							console.log("info " + info);
+							body.image = req.file.filename + '.jpg';
 							fs.unlinkSync(path.resolve(tempPath + ext));
+
+							compressAndResize(path.resolve(__dirname, '../public/finalUpload/' + body.image));
 
 							if (oldFileName) {
 								fs.unlinkSync(path.resolve(finalUploadPath + oldFileName));
+								fs.unlinkSync(path.resolve(finalUploadPath + 'thumbs/' + oldFileName));
 							}
 
 							recipe.update(body).then(function(recipe) {
