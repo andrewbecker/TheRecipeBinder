@@ -73,7 +73,7 @@ module.exports = {
 	},
 	doNewRecipe: function(req, res) {
 		for (var key in req.body) {
-			req.body[key] = req.body[key] || undefined;
+			req.body[key] = req.sanitize(req.body[key]) || undefined;
 		}
 		var body = _.pick(req.body, 'title', 'description', 'ingredients', 'instructions', 'yield', 'prep_time', 'cook_time', 'categoryId');
 		body.userId = req.session.user.id;
@@ -138,6 +138,9 @@ module.exports = {
 	},
 	updateRecipe: function(req, res) {
 		var recipeId = parseInt(req.params.id, 10);
+		for (var key in req.body) {
+			req.body[key] = req.sanitize(req.body[key]);
+		}
 		var body = _.pick(req.body, 'title', 'description', 'ingredients', 'instructions', 'yield', 'prep_time', 'cook_time', 'categoryId');
 
 		db.recipe.findOne({

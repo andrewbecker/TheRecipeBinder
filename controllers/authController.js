@@ -7,6 +7,9 @@ module.exports = {
 		res.render('signup', {csrfToken: req.csrfToken()});
 	},
 	createAccount: function(req, res) {
+		for (var key in req.body) {
+			req.body[key] = req.sanitize(req.body[key]);
+		}
 		var body = _.pick(req.body, 'username', 'password', 'first_name', 'last_name');
 
 		db.user.create(body).then(function(user) {
@@ -16,6 +19,9 @@ module.exports = {
 		});
 	},
 	login: function(req, res) {
+		for (var key in req.body) {
+			req.body[key] = req.sanitize(req.body[key]);
+		}
 		var body = _.pick(req.body, 'username', 'password');
 		var userInstance;
 		var originalUrl = req.header('Referer');

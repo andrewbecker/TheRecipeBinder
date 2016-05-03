@@ -1,4 +1,5 @@
 var express = require('express');
+var expressSanitizer = require('express-sanitizer');
 var path = require('path');
 var favicon = require('serve-favicon');
 var _ = require('underscore');
@@ -39,6 +40,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended: false
 }));
+app.use(expressSanitizer([]));
 app.use(methodOverride('_method'));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
