@@ -204,8 +204,12 @@ module.exports = {
 							compressAndResize(path.resolve(__dirname, '../public/finalUpload/' + body.image));
 
 							if (oldFileName) {
-								fs.unlinkSync(path.resolve(finalUploadPath + oldFileName));
-								fs.unlinkSync(path.resolve(finalUploadPath + 'thumbs/' + oldFileName));
+								if (fs.existsSync(path.resolve(finalUploadPath + oldFileName))) {
+									fs.unlinkSync(path.resolve(finalUploadPath + oldFileName));
+								}
+								if (fs.existsSync(path.resolve(finalUploadPath + 'thumbs/' + oldFileName))) {
+									fs.unlinkSync(path.resolve(finalUploadPath + 'thumbs/' + oldFileName));
+								}
 							}
 
 							recipe.update(body).then(function(recipe) {
@@ -245,8 +249,12 @@ module.exports = {
 			}
 		}).then(function (recipe) {
 			if (recipe.image) {
-				fs.unlinkSync(path.resolve(finalUploadPath + recipe.image));
-				fs.unlinkSync(path.resolve(finalUploadPath + 'thumbs/' + recipe.image));
+				if (fs.existsSync(path.resolve(finalUploadPath + recipe.image))) {
+					fs.unlinkSync(path.resolve(finalUploadPath + recipe.image));
+				}
+				if (fs.existsSync(path.resolve(finalUploadPath + 'thumbs/' + recipe.image))) {
+					fs.unlinkSync(path.resolve(finalUploadPath + 'thumbs/' + recipe.image));
+				}
 			}
 
 			db.recipe.destroy({
