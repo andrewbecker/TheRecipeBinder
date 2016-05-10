@@ -61,8 +61,13 @@ module.exports = {
 			user = req.session.user;
 		}
 		var recipeId = parseInt(req.params.id, 10);
+		var slug = req.params.slug;
 
-		db.recipe.findById(recipeId, {
+		db.recipe.findOne({
+			where: {
+				id: recipeId,
+				slug: slug
+			},
 			include: [{
 				model: db.review,
 				model: db.user
@@ -128,7 +133,7 @@ module.exports = {
 					compressAndResize(path.resolve(__dirname, '../public/finalUpload/' + body.image));
 
 					db.recipe.create(body).then(function(recipe) {
-						res.redirect('/recipe/view/' + recipe.id);
+						res.redirect('/recipe/view/' + recipe.id + '/' + recipe.slug);
 					}, function(e) {
 						console.log(e.message);
 						res.render('error', {message: e.toString(), csrfToken: req.csrfToken()});
@@ -140,7 +145,7 @@ module.exports = {
 		} else {
 
 			db.recipe.create(body).then(function(recipe) {
-				res.redirect('/recipe/view/' + recipe.id);
+				res.redirect('/recipe/view/' + recipe.id + '/' + recipe.slug);
 			}, function(e) {
 				console.log(e.message);
 				res.render('error', {message: e.toString(), csrfToken: req.csrfToken()});
@@ -213,7 +218,7 @@ module.exports = {
 							}
 
 							recipe.update(body).then(function(recipe) {
-								res.redirect('/recipe/view/' + recipe.id);
+								res.redirect('/recipe/view/' + recipe.id + '/' + recipe.slug);
 							}, function(e) {
 								res.render('error', {message: e.toString(), csrfToken: req.csrfToken()});
 							});
@@ -233,7 +238,7 @@ module.exports = {
 				} else {
 
 					recipe.update(body).then(function(recipe) {
-						res.redirect('/recipe/view/' + recipe.id);
+						res.redirect('/recipe/view/' + recipe.id + '/' + recipe.slug);
 					}, function(e) {
 						res.render('error', {message: e.toString(), csrfToken: req.csrfToken()});
 					});
