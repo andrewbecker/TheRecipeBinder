@@ -15,6 +15,7 @@ module.exports = {
 			]
 		}).then(function(recipes) {
 			newRecipes = recipes;
+			console.log('These are the new recipes: ' + recipes);
 
 			db.category.findAll({
 			}).then(function(categories) {
@@ -24,8 +25,9 @@ module.exports = {
 						[ 'createdAt', 'ASC' ]
 					]
 				}).then(function(allRecipes) {
-					res.render('index', { recipes: recipes, categories: allCategories, allRecipes: allRecipes, user: user, title: 'The Recipe Binder', csrfToken: req.csrfToken()});
-				})
+					res.render('index', { recipes: recipes, categories: allCategories, allRecipes: allRecipes, user: user, title: 'The Recipe Binder', csrfToken: req.csrfToken() });
+					// , success: req.flash('success'), error: req.flash('error')
+				});
 
 			});
 		}, function(e){

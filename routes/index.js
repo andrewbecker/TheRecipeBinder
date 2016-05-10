@@ -20,7 +20,7 @@ router.all('*', csrfProtection);
 
 /* GET home page. */
 router.get('/', homeController.index);
-router.get('/recipe/view/:id', recipeController.viewRecipe);
+router.get('/recipe/view/:id/:slug', recipeController.viewRecipe);
 
 /* Following routes require the user to be logged in */
 //router.all(middleware.requireAuthentication);
