@@ -11,75 +11,76 @@
 		</div>
 	</div>
 {{/if}}
+<div itemscope itemtype="http://schema.org/Recipe">
+	<div class="row page-header">
+		<div class="col-lg-8">
+			<h1 itemprop="name">{{recipe.title}}</h1>
+			<p>Recipe by: {{recipe.user.username}}</p>
+		</div>
 
-<div class="row page-header">
-	<div class="col-lg-8">
-		<h1>{{recipe.title}}</h1>
-		<p>Recipe by: {{recipe.user.username}}</p>
-	</div>
-
-	<div class="col-lg-12">
-		{{#if recipe.description}}<p>&quot;{{recipe.description}}&quot;</p>{{/if}}
-	</div>
-</div>
-<div class="row">
-	<!-- Left column for ingredients -->
-	<div class="col-lg-12">
-		<div class="col-xs-12 {{!-- col-xs-offset-1 --}} col-sm-6 col-sm-offset-1 pull-right">
-			<!-- right column for picture -->
-			{{#if recipe.image}}
-				<img src="/finalUpload/{{recipe.image}}" alt="{{recipe.title}}" class="img-responsive recipe-img" >
-			{{/if}}
-		</div>
-		<div class="col-sm-5 col-xs-6">
-			<h2>Ingredients</h2>
-			<ul class="list-unstyled ingredients">
-				{{#each recipe.ingredients}}
-					<li class="ingredient"><span class="glyphicon glyphicon-ok"></span>{{this}}</li>
-				{{/each}}
-			</ul>
-		</div>
-		
-	</div>
-</div>
-<!-- Left column for instructions -->
-<div class="row">
-	<div class="col-lg-12">
-		<div class="col-sm-6">
-			<h2>Instructions</h2>
-			<ul class="list-unstyled list-inline prepTimes">
-				<li class="prep-logo text-center"><span class="glyphicon glyphicon-time" style="font-size: 3em;"></span></li>
-				<li class="prep-time text-center"><p>Prep</p><span>{{recipe.prep_time.hours}}h {{recipe.prep_time.min}}m</span></li>
-				<li class="prep-time text-center"><p>Cook</p><span>{{recipe.cook_time.hours}}h {{recipe.cook_time.min}}m</span></li>
-				<li class="prep-time text-center"><p>Total</p><span>{{recipe.total_time.hours}}h {{recipe.total_time.min}}m</span></li>
-				<li class="prep-time text-center"><p>Servings</p><span>{{recipe.yield}}</span></li>
-			</ul>
-			<ol>
-				{{#each recipe.instructions}}
-					<li class="instruction">{{this}}</li>
-				{{/each}}
-			</ol>
+		<div class="col-lg-12">
+			{{#if recipe.description}}<p itemprop="description">&quot;{{recipe.description}}&quot;</p>{{/if}}
 		</div>
 	</div>
-</div>
-{{#if review}}
 	<div class="row">
-		<div class="col-xs-12 col-md-6">
-			<h2>Reviews</h2>
-			<div class="review-container">
-				{{#each review}}
-					<div class="row">
-						<div class="review">
-							<div class="well well-sm review-header">
-								<span class="reviewAuthor">{{name}}</span>
-							</div>
-							<div class="col-xs-12">
-								<p>{{comment}}</p>
-							</div>
-						</div>
-					</div>
-				{{/each}}
+		<!-- Left column for ingredients -->
+		<div class="col-lg-12">
+			<div class="col-xs-12 {{!-- col-xs-offset-1 --}} col-sm-6 col-sm-offset-1 pull-right">
+				<!-- right column for picture -->
+				{{#if recipe.image}}
+					<img itemprop="image" src="/finalUpload/{{recipe.image}}" alt="{{recipe.title}}" class="img-responsive recipe-img" >
+				{{/if}}
+			</div>
+			<div class="col-sm-5 col-xs-6">
+				<h2>Ingredients</h2>
+				<ul class="list-unstyled ingredients">
+					{{#each recipe.ingredients}}
+						<li class="ingredient"><span class="glyphicon glyphicon-ok"></span><span itemprop="recipeIngredient">{{this}}</span></li>
+					{{/each}}
+				</ul>
+			</div>
+			
+		</div>
+	</div>
+	<!-- Left column for instructions -->
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="col-sm-6">
+				<h2>Instructions</h2>
+				<ul class="list-unstyled list-inline prepTimes">
+					<li class="prep-logo text-center"><span class="glyphicon glyphicon-time" style="font-size: 3em;"></span></li>
+					<li class="prep-time text-center"><p>Prep</p><time datetime="PT{{recipe.prep_time.hours}}H{{recipe.prep_time.min}}M" itemProp="prepTime">{{recipe.prep_time.hours}}h {{recipe.prep_time.min}}m</time></li>
+					<li class="prep-time text-center"><p>Cook</p><time datetime="PT{{recipe.cook_time.hours}}H{{recipe.cook_time.min}}M" itemProp="cookTime">{{recipe.cook_time.hours}}h {{recipe.cook_time.min}}m</time></li>
+					<li class="prep-time text-center"><p>Total</p><time datetime="PT{{recipe.total_time.hours}}H{{recipe.total_time.min}}M" itemProp="totalTime">{{recipe.total_time.hours}}h {{recipe.total_time.min}}m</time></li>
+					<li class="prep-time text-center"><p>Servings</p><span itemprop="recipeYield">{{recipe.yield}}</span></li>
+				</ul>
+				<ol itemprop="recipeInstructions">
+					{{#each recipe.instructions}}
+						<li class="instruction">{{this}}</li>
+					{{/each}}
+				</ol>
 			</div>
 		</div>
 	</div>
-{{/if}}
+	{{#if review}}
+		<div class="row">
+			<div class="col-xs-12 col-md-6">
+				<h2>Reviews</h2>
+				<div class="review-container">
+					{{#each review}}
+						<div class="row">
+							<div class="review">
+								<div class="well well-sm review-header">
+									<span class="reviewAuthor">{{name}}</span>
+								</div>
+								<div class="col-xs-12">
+									<p>{{comment}}</p>
+								</div>
+							</div>
+						</div>
+					{{/each}}
+				</div>
+			</div>
+		</div>
+	{{/if}}
+</div>
