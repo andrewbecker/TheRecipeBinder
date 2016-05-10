@@ -4,13 +4,16 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="author" content="TheRecipeBinder.com">
 		<meta name="keywords" >
+		<meta name="description" content="A collection of unique recipes" >
 		<meta name="google-site-verification" content="H8VJN7G6ePTonXMCbpW4-2DWJ3rRMHB3V_mRGjU5RlU" />
 	    <title>{{title}}</title>
 		{{!-- Include Bootstrap --}}
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+		{{!-- <link rel="stylesheet" href="/bootflat/css/bootflat.min.css"> --}}
 		{{!-- Custom CSS --}}
 	    <link rel='stylesheet' href='/stylesheets/style.css' />
+	    <link rel='stylesheet' href='/stylesheets/testing.css' />
 	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
   	</head>
   	<body>
@@ -83,7 +86,9 @@
  --}}		</nav>
 <div class="container main-area">
 {{!-- 		<div class="container">
- --}}			{{{body}}}
+ --}}			
+			{{>flashMessage}}
+ 			{{{body}}}
 {{!-- 		</div>
  --}}
 {{!-- 		<div class="container">
