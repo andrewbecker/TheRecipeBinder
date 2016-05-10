@@ -12,7 +12,6 @@ if (process.env.NODE_ENV === 'production') {
 	var finalUploadPath = './public/finalUpload/';
 }
 
-var categoriesMain = ['Breakfast', 'Lunch', 'Dinner'];
 
 // var sendJsonResponse = function(res, status, content) {
 // 	res.status(status);
@@ -79,17 +78,23 @@ module.exports = {
 					message: 'recipe not found', csrfToken: req.csrfToken()
 				});
 			} else {
-				recipe.total_time = generateHoursMinutes(recipe.prep_time + recipe.cook_time);
-				recipe.prep_time = generateHoursMinutes(recipe.prep_time);
-				recipe.cook_time = generateHoursMinutes(recipe.cook_time);
+				db.category.findAll({
+					order: [
+						['category', 'ASC']
+					]
+				}).then(function(categories) {
+					recipe.total_time = generateHoursMinutes(recipe.prep_time + recipe.cook_time);
+					recipe.prep_time = generateHoursMinutes(recipe.prep_time);
+					recipe.cook_time = generateHoursMinutes(recipe.cook_time);
 
-				if (recipe.ingredients) { recipe.ingredients = recipe.ingredients.split("\r\n"); }
-				if (recipe.instructions) { recipe.instructions = recipe.instructions.split("\r\n"); }
-				res.render('viewRecipe', { recipe: recipe, review: recipe.reviews, categories: categoriesMain, title: recipe.title, user: user, csrfToken: req.csrfToken() });
+					if (recipe.ingredients) { recipe.ingredients = recipe.ingredients.split("\r\n"); }
+					if (recipe.instructions) { recipe.instructions = recipe.instructions.split("\r\n"); }
+					res.render('viewRecipe', { recipe: recipe, review: recipe.reviews, categories: categories, title: recipe.title, user: user, csrfToken: req.csrfToken() });
+				});
+				
 			}
 
 		});
-
 	},
 	newRecipe: function(req, res) {
 		if (req.session.user) {
