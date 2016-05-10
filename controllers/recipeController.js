@@ -301,8 +301,9 @@ module.exports = {
 					categoryId: category.id
 				}
 			}).then(function(recipes) {
+				var title = category.category + ' - The Recipe Binder';
 				db.category.findAll().then(function(categories) {
-					res.render('myRecipes', {recipes: recipes, user: user, title: 'The Recipe Binder', categories: categories, pageName: category.category, csrfToken: req.csrfToken()});
+					res.render('myRecipes', {recipes: recipes, user: user, title: title, categories: categories, pageName: category.category, csrfToken: req.csrfToken()});
 				});
 			});
 		});
