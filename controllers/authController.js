@@ -2,9 +2,15 @@ var db = require('../db'),
 	_ = require('underscore'),
 	cryptojs = require('crypto-js');
 
+if (process.env.NODE_ENV === 'production') {
+	var googleTracking = true;
+} else {
+	var googleTracking = false;
+}
+
 module.exports = {
 	signup: function(req, res) {
-		res.render('signup', {csrfToken: req.csrfToken()});
+		res.render('signup', {csrfToken: req.csrfToken(), google: googleTracking});
 	},
 	createAccount: function(req, res) {
 		for (var key in req.body) {
@@ -15,7 +21,8 @@ module.exports = {
 		db.user.create(body).then(function(user) {
 			res.json(user);
 		}, function(e) {
-			res.status(400).json(e);
+			req.flash('error', 'There was an error creating your account');
+			res.redirect('/');
 		});
 	},
 	login: function(req, res) {
@@ -38,19 +45,20 @@ module.exports = {
 				token: token
 			});
 		}).then(function(tokenInstance) {
+			req.flash('success', 'You have logged in!');
 			req.session.auth = tokenInstance.token;
 			res.redirect(originalUrl || '/');
 		}).catch(function () {
-			res.redirect('/');
+			req.flash('error', 'Username or password incorrect');
+			res.redirect('/users');
 		});
 	},
 	loginForm: function(req, res) {
-		res.render('loginForm', { csrfToken: req.csrfToken() });
+		res.render('loginForm', { csrfToken: req.csrfToken(), google: googleTracking });
 	},
 	logout: function(req, res) {
-		req.session.destroy(function(err) {
-			if (err) { throw err; }
-		});
+		req.session.user = null;
+		req.flash('success', 'You have been logged out');
 		res.redirect('/');
 	}
 };

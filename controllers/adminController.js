@@ -1,6 +1,12 @@
 var db = require('../db');
 var _ = require('underscore');
 
+if (process.env.NODE_ENV === 'production') {
+	var googleTracking = true;
+} else {
+	var googleTracking = false;
+}
+
 module.exports = {
 	home: function(req, res) {
 		var user;
@@ -13,7 +19,7 @@ module.exports = {
 					['category', 'ASC']
 				]
 			}).then(function(category) {
-			res.render('admin/categories', { category: category, user: user, csrfToken: req.csrfToken() })
+			res.render('admin/categories', { category: category, user: user, csrfToken: req.csrfToken(), google: googleTracking })
 		});
 	},
 	newCategory: function(req, res) {

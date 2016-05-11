@@ -1,4 +1,6 @@
-{{> googleTracking}}
+{{#if google}}
+	{{> googleTracking}}
+{{/if}}
 <div class="row">
 	<div class="col-xs-12">
 		<form class="form-horizontal" action="?_csrf={{csrfToken}}" method="post" enctype="multipart/form-data">

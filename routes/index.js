@@ -20,6 +20,7 @@ router.all('*', csrfProtection);
 
 /* GET home page. */
 router.get('/', homeController.index);
+router.get('/test', homeController.test);
 router.get('/recipe/view/:id/:slug', recipeController.viewRecipe);
 
 /* Following routes require the user to be logged in */

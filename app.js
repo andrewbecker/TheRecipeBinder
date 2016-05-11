@@ -38,7 +38,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -48,13 +48,23 @@ app.use(expressSanitizer([]));
 app.use(methodOverride('_method'));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(flash());
 app.use(session({
   secret: 'random_string_goes_here',
   store:  new redisStore({ host: 'localhost', port: 6379, client: client, ttl :  1800}),
   resave: false,
   saveUninitialized: false
 }));
+// flash messages
+app.use(flash());
+// moves flash messages to locals
+app.use(function(req, res, next){
+	console.log('in res.locals');
+    res.locals.success = req.flash('success');
+    console.log(res.locals.success);
+    res.locals.errors = req.flash('error');
+    console.log(res.locals.errors);
+    next();
+});
 
 
 

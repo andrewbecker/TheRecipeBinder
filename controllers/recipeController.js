@@ -6,10 +6,13 @@ var sharp = require('sharp');
 
 if (process.env.NODE_ENV === 'production') {
 	var finalUploadPath = '/home/ryanrecipes/node/recipes/public/finalUpload/';
+	var googleTracking = true;
 } else if (process.env.NODE_ENV === 'staging') {
 	var finalUploadPath = '/home/andy/node/recipes/public/finalUpload/';
+	var googleTracking = false;
 } else {
 	var finalUploadPath = './public/finalUpload/';
+	var googleTracking = false;
 }
 
 
@@ -89,7 +92,7 @@ module.exports = {
 
 					if (recipe.ingredients) { recipe.ingredients = recipe.ingredients.split("\r\n"); }
 					if (recipe.instructions) { recipe.instructions = recipe.instructions.split("\r\n"); }
-					res.render('viewRecipe', { recipe: recipe, review: recipe.reviews, categories: categories, title: recipe.title, user: user, csrfToken: req.csrfToken() });
+					res.render('viewRecipe', { recipe: recipe, review: recipe.reviews, categories: categories, title: recipe.title, user: user, csrfToken: req.csrfToken(), google: googleTracking });
 				});
 				
 			}
@@ -105,7 +108,7 @@ module.exports = {
 					['category', 'ASC']
 				]
 			}).then(function(categories) {
-				res.render('newRecipe', { title: 'New Recipe', user: user, categories: categories, csrfToken: req.csrfToken()});
+				res.render('newRecipe', { title: 'New Recipe', user: user, categories: categories, csrfToken: req.csrfToken(), google: googleTracking});
 		});
 	},
 	doNewRecipe: function(req, res) {
@@ -138,10 +141,12 @@ module.exports = {
 					compressAndResize(path.resolve(__dirname, '../public/finalUpload/' + body.image));
 
 					db.recipe.create(body).then(function(recipe) {
+						req.flash('success', 'Recipe created');
 						res.redirect('/recipe/view/' + recipe.id + '/' + recipe.slug);
 					}, function(e) {
 						console.log(e.message);
-						res.render('error', {message: e.toString(), csrfToken: req.csrfToken()});
+						req.flash('error', 'Error creating new recipe');
+						res.render('error', {message: e.toString(), csrfToken: req.csrfToken(), google: googleTracking});
 					});
 				});
 				
@@ -150,10 +155,12 @@ module.exports = {
 		} else {
 
 			db.recipe.create(body).then(function(recipe) {
+				req.flash('success', 'Recipe created');
 				res.redirect('/recipe/view/' + recipe.id + '/' + recipe.slug);
 			}, function(e) {
 				console.log(e.message);
-				res.render('error', {message: e.toString(), csrfToken: req.csrfToken()});
+				req.flash('error', 'Error creating new recipe');
+				res.render('error', {message: e.toString(), csrfToken: req.csrfToken(), google: googleTracking});
 			});
 		}
 	},
@@ -172,7 +179,7 @@ module.exports = {
 				]
 			}).then(function(categories) {
 				var title = 'Update - ' + recipe.title;
-				res.render('updateRecipe', { recipe: recipe, title: title, user: user, categories: categories, csrfToken: req.csrfToken()});
+				res.render('updateRecipe', { recipe: recipe, title: title, user: user, categories: categories, csrfToken: req.csrfToken(), google: googleTracking});
 			});
 		});
 	},
@@ -223,9 +230,11 @@ module.exports = {
 							}
 
 							recipe.update(body).then(function(recipe) {
+								req.flash('success', 'Recipe updated');
 								res.redirect('/recipe/view/' + recipe.id + '/' + recipe.slug);
 							}, function(e) {
-								res.render('error', {message: e.toString(), csrfToken: req.csrfToken()});
+								req.flash('error', 'There was an error updating the recipe');
+								res.render('error', {message: e.toString(), csrfToken: req.csrfToken(), google: googleTracking});
 							});
 
 
@@ -243,9 +252,11 @@ module.exports = {
 				} else {
 
 					recipe.update(body).then(function(recipe) {
+						req.flash('success', 'Recipe updated');
 						res.redirect('/recipe/view/' + recipe.id + '/' + recipe.slug);
 					}, function(e) {
-						res.render('error', {message: e.toString(), csrfToken: req.csrfToken()});
+						req.flash('error', 'There was an error updating the recipe');
+						res.render('error', {message: e.toString(), csrfToken: req.csrfToken(), google: googleTracking});
 					});
 				}
 			}
@@ -272,9 +283,10 @@ module.exports = {
 					id: recipeId
 				}
 			}).then(function(rowsDeleted) {
+				req.flash('success', 'Recipe successfully deleted');
 				res.redirect('/');
 			}, function() {
-				res.render('error', { message: 'There was an error deleting recipe', csrfToken: req.csrfToken() });
+				res.render('error', { message: 'There was an error deleting recipe', csrfToken: req.csrfToken(), google: googleTracking });
 			});
 		});
 	},
@@ -285,7 +297,7 @@ module.exports = {
 				userId: user.id
 			}
 		}).then(function(recipes) {
-			res.render('myRecipes', {recipes: recipes, user: user, title: 'Ryan Family Recipes', pageName: 'My Recipes', csrfToken: req.csrfToken()})
+			res.render('myRecipes', {recipes: recipes, user: user, title: 'Ryan Family Recipes', pageName: 'My Recipes', csrfToken: req.csrfToken(), google: googleTracking})
 		});
 	},
 	getRecipesByCategory: function(req, res) {
@@ -303,7 +315,7 @@ module.exports = {
 			}).then(function(recipes) {
 				var title = category.category + ' - The Recipe Binder';
 				db.category.findAll().then(function(categories) {
-					res.render('myRecipes', {recipes: recipes, user: user, title: title, categories: categories, pageName: category.category, csrfToken: req.csrfToken()});
+					res.render('myRecipes', {recipes: recipes, user: user, title: title, categories: categories, pageName: category.category, csrfToken: req.csrfToken(), google: googleTracking});
 				});
 			});
 		});
