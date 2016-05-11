@@ -32,7 +32,7 @@ module.exports = {
 		var body = _.pick(req.body, 'username', 'password');
 		var userInstance;
 		var originalUrl = req.header('Referer');
-		if (originalUrl === 'http://localhost:3000/users') {
+		if (req.baseUrl === '/users') {
 			originalUrl = '/';
 		}
 		
@@ -54,6 +54,7 @@ module.exports = {
 		});
 	},
 	loginForm: function(req, res) {
+		req.session.prev = req.get('host') + '/users';
 		res.render('loginForm', { csrfToken: req.csrfToken(), google: googleTracking });
 	},
 	logout: function(req, res) {
