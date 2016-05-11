@@ -39,6 +39,10 @@ module.exports = function (sequelize, DataTypes) {
 				this.setDataValue('salt', salt);
 				this.setDataValue('password_hash', hashedPassword);
 			}
+		},
+		isAdmin: {
+			type: DataTypes.BOOLEAN,
+			default: false
 		}
 	}, {
 		hooks: {
@@ -51,7 +55,6 @@ module.exports = function (sequelize, DataTypes) {
 		},
 		classMethods: {
 			authenticate: function (body) {
-				console.log("in auth: " + body.username);
 				return new Promise(function (resolve, reject) {
 					if (typeof body.username !== 'string' || typeof body.password !== 'string') {
 						return reject();
@@ -97,7 +100,7 @@ module.exports = function (sequelize, DataTypes) {
 		instanceMethods: {
 			toPublicJSON: function () {
 				var json = this.toJSON();
-				return _.pick(json, 'id', 'username', 'first_name', 'last_name', 'updatedAt', 'createdAt');
+				return _.pick(json, 'id', 'username', 'first_name', 'last_name', 'updatedAt', 'createdAt', 'isAdmin');
 			},
 			generateToken: function (type) {
 				if (!_.isString(type)) {
