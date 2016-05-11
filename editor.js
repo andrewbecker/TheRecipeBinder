@@ -8,7 +8,6 @@ function processImg (filesrc) {
   // .pipe(imagemin({optimizationLevel: 5}))
   // .pipe(gulp.dest('public/images/og'))
   // save 450 x 450
-  .pipe(imagemin({optimizationLevel: 7}))
   .pipe(imageResize({
     width: 270,
     height: 270,
