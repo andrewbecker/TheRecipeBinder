@@ -4,7 +4,6 @@ module.exports = function (db) {
 
 	return {
 		requireAuthentication: function (req, res, next) {
-			console.log("*** IN requireAuthentication ***");
 			var token = req.session.auth || '';
 
 			db.token.findOne({
@@ -22,8 +21,18 @@ module.exports = function (db) {
 				req.user = user.toPublicJSON();
 				next();
 			}).catch(function () {
-				res.render('error', {message: 'User must be logged in', csrfToken: req.csrfToken()});
+				req.flash('error', 'You must be logged in to view this page');
+				res.redirect('/');
 			});
+		},
+		isAdmin: function(req, res, next) {
+			var user = req.session.user;
+			if (user.isAdmin) {
+				next();
+			} else {
+				req.flash('error', 'You do not have access to this page');
+				res.redirect('/');
+			}
 		}
 	};
 

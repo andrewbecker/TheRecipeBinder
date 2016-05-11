@@ -58,8 +58,7 @@ module.exports = {
 		res.render('loginForm', { csrfToken: req.csrfToken(), google: googleTracking });
 	},
 	logout: function(req, res) {
-		req.session.user = null;
-		req.flash('success', 'You have been logged out');
+		req.session.destroy();
 		res.redirect('/');
 	}
 };

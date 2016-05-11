@@ -7,6 +7,7 @@ var csrf = require('csurf');
 var csrfProtection = csrf();
 
 router.all('*', middleware.requireAuthentication);
+router.all('*', middleware.isAdmin);
 router.all('*', csrfProtection);
 
 router.get('/', adminController.home);
